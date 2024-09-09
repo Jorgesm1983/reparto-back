@@ -1,0 +1,17 @@
+# Archivos y carpetas de Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+env/
+.env
+
+# Archivos y carpetas de Node.js/React
+node_modules/
+build/
+.env
+
+# Archivos de configuración y sistema
+.DS_Store
+.vscode/
+.idea/
