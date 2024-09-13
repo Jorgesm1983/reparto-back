@@ -13,6 +13,7 @@ class DeliveryImageAdmin(admin.ModelAdmin):
 
 @admin.register(IssuePhoto)
 class IssuePhotoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'image')
+    list_display = ('id', 'image')  # Agrega el número de producto aquí si existe en el modelo
+   
 
 

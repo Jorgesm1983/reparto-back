@@ -135,9 +135,11 @@ class Delivery(models.Model):
     client_conformity = models.BooleanField(default=True)
     has_issue = models.BooleanField(default=False)
     observations = models.TextField(blank=True, null=True)
-    issues = models.JSONField(default=list)
+    issues = models.JSONField(default=list, blank=True)
     delivery_images = models.ManyToManyField('DeliveryImage', blank=True)
     issue_photos = models.ManyToManyField('IssuePhoto', blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)  # Fecha y hora de creación
+    updated_at = models.DateTimeField(auto_now=True)      # Fecha y hora de la última actualización
     
     def __str__(self):
         return f"Albarán {self.fiscal_year}/{self.delivery_number}"

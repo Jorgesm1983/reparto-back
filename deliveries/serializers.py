@@ -56,10 +56,11 @@ class IssuePhotoSerializer(serializers.ModelSerializer):
 class DeliverySerializer(serializers.ModelSerializer):
     delivery_images = serializers.ListField(child=serializers.ImageField(), write_only=True, required=False)
     issue_photos = serializers.ListField(child=serializers.ImageField(), write_only=True, required=False)
+    issues = serializers.ListField(child=serializers.IntegerField(), required=False, allow_empty=True)  # Agrega esta línea para el campo `issues`
 
     class Meta:
         model = Delivery
-        fields = ['fiscal_year', 'delivery_number', 'client_conformity', 'has_issue', 'observations', 'delivery_images', 'issue_photos']
+        fields = ['fiscal_year', 'delivery_number', 'client_conformity', 'has_issue', 'observations', 'delivery_images', 'issue_photos', 'issues']
 
     def create(self, validated_data):
         delivery_images = validated_data.pop('delivery_images', [])
@@ -67,6 +68,7 @@ class DeliverySerializer(serializers.ModelSerializer):
         issues = validated_data.pop('issues', [])
         
         delivery = super().create(validated_data)
+        
         
         # Si hay problemas, almacénalos
         if issues:
