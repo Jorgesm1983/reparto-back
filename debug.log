@@ -1,0 +1,807 @@
+Watching for file changes with StatReloader
+Waiting for apps ready_event.
+Apps ready_event triggered. Sending autoreload_started signal.
+Watching dir C:\App Transporte\backend\templates with glob **/*.
+Watching dir C:\App Transporte\backend\locale with glob **/*.mo.
+Watching dir C:\App Transporte\backend\venv\Lib\site-packages\corsheaders\locale with glob **/*.mo.
+Watching dir C:\App Transporte\backend\deliveries\locale with glob **/*.mo.
+Watching dir C:\App Transporte\backend\api\locale with glob **/*.mo.
+(0.000) 
+                SELECT VERSION(),
+                       @@sql_mode,
+                       @@default_storage_engine,
+                       @@sql_auto_is_null,
+                       @@lower_case_table_names,
+                       CONVERT_TZ('2001-01-01 01:00:00', 'UTC', 'UTC') IS NOT NULL
+            ; args=None; alias=default
+(0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None; alias=default
+(0.000) 
+            SELECT
+                table_name,
+                table_type,
+                table_comment
+            FROM information_schema.tables
+            WHERE table_schema = DATABASE()
+            ; args=None; alias=default
+(0.000) SELECT `django_migrations`.`id`, `django_migrations`.`app`, `django_migrations`.`name`, `django_migrations`.`applied` FROM `django_migrations`; args=(); alias=default
+File C:\Python312\Lib\getpass.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\base\client.py first seen with mtime 1725652584.353046
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\utils\timezone.py first seen with mtime 1725652591.149604
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\__init__.py first seen with mtime 1725652584.393077
+File C:\App Transporte\backend\venv\Lib\site-packages\MySQLdb\_exceptions.py first seen with mtime 1725655957.738207
+File C:\Python312\Lib\email\errors.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\string.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\lookups.py first seen with mtime 1725652584.3988698
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\dates.py first seen with mtime 1725652584.5534334
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\decorators\__init__.py first seen with mtime 1725652584.5774703
+File C:\Python312\Lib\fnmatch.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\argparse.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\migrations\operations\__init__.py first seen with mtime 1725652584.3900135
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\exceptions.py first seen with mtime 1725652584.5225985
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\utils\humanize_datetime.py first seen with mtime 1725652591.1457553
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\base\schema.py first seen with mtime 1725652584.3552878
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\filters\aligned_indent.py first seen with mtime 1725652581.518465
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\static.py first seen with mtime 1725652584.5769725
+File C:\Python312\Lib\inspect.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\management\__init__.py first seen with mtime 1725652584.3233576
+File C:\Python312\Lib\lzma.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\decorators.py first seen with mtime 1725652582.8316772
+File C:\Python312\Lib\tempfile.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\hashers.py first seen with mtime 1725652582.8334367
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\transaction.py first seen with mtime 1725652584.3474393
+File C:\App Transporte\backend\venv\Lib\site-packages\django\templatetags\static.py first seen with mtime 1725652584.5351236
+File C:\App Transporte\backend\venv\Lib\site-packages\environ\__init__.py first seen with mtime 1725654061.3296404
+File C:\Python312\Lib\struct.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\models.py first seen with mtime 1725652582.283652
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\library.py first seen with mtime 1725652584.5231004
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\text.py first seen with mtime 1725652584.5669422
+File C:\Python312\Lib\asyncio\threads.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\nturl2path.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\asyncio\trsock.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\opcode.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\keywords.py first seen with mtime 1725652581.5126426
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\request.py first seen with mtime 1725652591.0060737
+File C:\App Transporte\backend\venv\Lib\site-packages\MySQLdb\constants\FLAG.py first seen with mtime 1725655957.7473428
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\functions\mixins.py first seen with mtime 1725652584.413476
+File C:\Python312\Lib\_markupbase.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\i18n.py first seen with mtime 1725652584.575898
+File C:\Python312\Lib\email\_encoded_words.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\mysql\validation.py first seen with mtime 1725652584.3638742
+File C:\App Transporte\backend\venv\Lib\site-packages\django\urls\conf.py first seen with mtime 1725652584.5433335
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\deprecation.py first seen with mtime 1725652584.555106
+File C:\App Transporte\backend\venv\Lib\site-packages\corsheaders\apps.py first seen with mtime 1725656877.2759595
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\sessions\models.py first seen with mtime 1725652583.9808145
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\csrf.py first seen with mtime 1725652584.5744023
+File C:\App Transporte\backend\venv\Lib\site-packages\MySQLdb\_mysql.cp312-win_amd64.pyd first seen with mtime 1725655957.7412326
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\decorators.py first seen with mtime 1725652582.280463
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\management\commands\runserver.py first seen with mtime 1725652584.3353217
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\messages.py first seen with mtime 1725652584.2989504
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\handlers\__init__.py first seen with mtime 1725652584.3139808
+File C:\Python312\DLLs\unicodedata.pyd first seen with mtime 1722970996.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\__init__.py first seen with mtime 1725652582.8281016
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\base\base.py first seen with mtime 1725652584.3524656
+File C:\Python312\Lib\urllib\error.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\deliveries\views.py first seen with mtime 1726311679.172478
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\aggregates.py first seen with mtime 1725652584.3940809
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\constants.py first seen with mtime 1725652584.3950987
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\views\decorators.py first seen with mtime 1725652582.6791935
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\serializers\json.py first seen with mtime 1725652584.3429182
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\generics.py first seen with mtime 1725652591.0007396
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\security\csrf.py first seen with mtime 1725652584.3046584
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\filters.py first seen with mtime 1725652582.2809615
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\defaultfilters.py first seen with mtime 1725652584.5204833
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\schemas\coreapi.py first seen with mtime 1725652591.0737717
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\translation.py first seen with mtime 1725652584.3009868
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\connection.py first seen with mtime 1725652584.5500662
+File C:\Python312\Lib\asyncio\timeouts.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\postgres\forms\__init__.py first seen with mtime 1725652583.694687
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\reverse.py first seen with mtime 1725652591.0065694
+File C:\Python312\Lib\threading.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\email\headerregistry.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\termcolors.py first seen with mtime 1725652584.5660615
+File C:\Python312\Lib\asyncio\streams.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\asyncio\__init__.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\regex_helper.py first seen with mtime 1725652584.5650568
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\http.py first seen with mtime 1725652584.5598555
+File C:\App Transporte\backend\project\__init__.py first seen with mtime 1725652747.860017
+File C:\Python312\DLLs\_bz2.pyd first seen with mtime 1722970996.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\templatetags\admin_list.py first seen with mtime 1725652582.6765013
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\expressions.py first seen with mtime 1725652584.3983667
+File C:\Python312\Lib\asyncio\subprocess.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\cache\utils.py first seen with mtime 1725652584.290833
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\schemas\inspectors.py first seen with mtime 1725652591.0755422
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\Image.py first seen with mtime 1725723819.3833053
+File C:\Python312\Lib\calendar.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\files\base.py first seen with mtime 1725652584.3057163
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\backends\__init__.py first seen with mtime 1725652584.5263212
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\__init__.py first seen with mtime 1725652582.2770967
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\mail\__init__.py first seen with mtime 1725652584.3175025
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\duration.py first seen with mtime 1725652584.555106
+File C:\Python312\Lib\typing.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\functions\text.py first seen with mtime 1725652584.413979
+File C:\App Transporte\backend\venv\Lib\site-packages\asgiref\sync.py first seen with mtime 1725652581.885292
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\fields\related_descriptors.py first seen with mtime 1725652584.408994
+File C:\Python312\Lib\sysconfig.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\schemas\generators.py first seen with mtime 1725652591.0750382
+File C:\Python312\Lib\functools.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\json\__init__.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\gzip.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\MySQLdb\__init__.py first seen with mtime 1725655957.7377093
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\exceptions.py first seen with mtime 1725652581.5115736
+File C:\Python312\Lib\importlib\_abc.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\ctypes\__init__.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\staticfiles\management\commands\runserver.py first seen with mtime 1725652584.283245
+File C:\App Transporte\backend\venv\Lib\site-packages\django\forms\utils.py first seen with mtime 1725652584.4259953
+File C:\Python312\Lib\random.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\graphlib.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\types.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\utils.py first seen with mtime 1725652584.4028962
+File C:\Python312\DLLs\_uuid.pyd first seen with mtime 1722970996.0
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\utils\mediatypes.py first seen with mtime 1725652591.1469944
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\migrations\operations\base.py first seen with mtime 1725652584.3912635
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\staticfiles\handlers.py first seen with mtime 1725652584.275695
+File C:\App Transporte\backend\venv\Lib\site-packages\MySQLdb\release.py first seen with mtime 1725655957.7440019
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\base\creation.py first seen with mtime 1725652584.353046
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\files\uploadedfile.py first seen with mtime 1725652584.3091128
+File C:\Python312\Lib\wsgiref\handlers.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\staticfiles\checks.py first seen with mtime 1725652584.2751906
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\encoding.py first seen with mtime 1725652584.5562594
+File C:\App Transporte\backend\project\settings.py first seen with mtime 1726311722.4636943
+File C:\Python312\Lib\asyncio\exceptions.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\views.py first seen with mtime 1725652591.0129752
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\html.py first seen with mtime 1725652584.558678
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\_util.py first seen with mtime 1725723819.459729
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\files\__init__.py first seen with mtime 1725652584.3057163
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admindocs\__init__.py first seen with mtime 1725652582.6812353
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\backends\base.py first seen with mtime 1725652584.5268261
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\templatetags\__init__.py first seen with mtime 1725652582.6759968
+File C:\Python312\Lib\json\decoder.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\middleware\csrf.py first seen with mtime 1725652584.5142994
+File C:\Python312\Lib\email\_header_value_parser.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\email\utils.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\cache\backends\base.py first seen with mtime 1725652584.2921977
+File C:\Python312\Lib\email\_parseaddr.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\mixins.py first seen with mtime 1725652591.0012355
+File C:\App Transporte\backend\project\urls.py first seen with mtime 1725792910.864056
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\management\commands\__init__.py first seen with mtime 1725652584.3265982
+File C:\Python312\Lib\base64.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\base\operations.py first seen with mtime 1725652584.3552878
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\widgets.py first seen with mtime 1725652582.286887
+File C:\Python312\Lib\email\contentmanager.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\email\mime\base.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\checks.py first seen with mtime 1725652582.8306527
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\utils\model_meta.py first seen with mtime 1725652591.1480875
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\postgresql\__init__.py first seen with mtime 1725652584.3711917
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\admin.py first seen with mtime 1725652582.8281016
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\engine\grouping.py first seen with mtime 1725652581.5165646
+File C:\Python312\Lib\numbers.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\files\locks.py first seen with mtime 1725652584.306746
+File C:\App Transporte\backend\venv\Lib\site-packages\django\dispatch\__init__.py first seen with mtime 1725652584.41998
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\permissions.py first seen with mtime 1725652591.0039418
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\options.py first seen with mtime 1725652584.4009707
+File C:\Python312\Lib\re\__init__.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\__init__.py first seen with mtime 1725652584.5460424
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\staticfiles\views.py first seen with mtime 1725652584.2800133
+File C:\Python312\Lib\pkgutil.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\glob.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\serializers\__init__.py first seen with mtime 1725652584.3424237
+File C:\Python312\Lib\email\base64mime.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\validators.py first seen with mtime 1725652582.8375826
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\ddl_references.py first seen with mtime 1725652584.3498123
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\caches.py first seen with mtime 1725652584.2968352
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\files.py first seen with mtime 1725652584.2978396
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\mail\message.py first seen with mtime 1725652584.3180003
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\utils.py first seen with mtime 1725652584.3486643
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\fields\proxy.py first seen with mtime 1725652584.4074786
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\base\validation.py first seen with mtime 1725652584.3566039
+File C:\App Transporte\backend\venv\Lib\site-packages\psycopg2\_psycopg.cp312-win_amd64.pyd first seen with mtime 1725652581.7685587
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\filters\tokens.py first seen with mtime 1725652581.5212183
+File C:\Python312\Lib\ctypes\_endian.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\asyncio\protocols.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\bisect.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\http\cookie.py first seen with mtime 1725652584.5097046
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\postgres\__init__.py first seen with mtime 1725652583.6817055
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\paginator.py first seen with mtime 1725652584.2868536
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\defaults.py first seen with mtime 1725652584.575898
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\forms.py first seen with mtime 1725652582.8329308
+File C:\Python312\Lib\encodings\cp1252.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\deliveries\urls.py first seen with mtime 1725792891.7539923
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\__init__.py first seen with mtime 1725652584.5738988
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\cache\__init__.py first seen with mtime 1725652584.2899702
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\mysql\introspection.py first seen with mtime 1725652584.362349
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\model_checks.py first seen with mtime 1725652584.2994556
+File C:\App Transporte\backend\deliveries\admin.py first seen with mtime 1726261815.8705359
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\signing.py first seen with mtime 1725652584.288415
+File C:\Python312\Lib\asyncio\locks.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\utils\__init__.py first seen with mtime 1725652591.1432595
+File C:\Python312\Lib\copyreg.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\sessions\backends\__init__.py first seen with mtime 1725652583.9819114
+File C:\Python312\DLLs\select.pyd first seen with mtime 1722970996.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\sessions\__init__.py first seen with mtime 1725652583.9786677
+File C:\App Transporte\backend\venv\Lib\site-packages\MySQLdb\constants\FIELD_TYPE.py first seen with mtime 1725655957.7473428
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\sites\shortcuts.py first seen with mtime 1725652584.1309006
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\decorators\csrf.py first seen with mtime 1725652584.5797887
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\views\main.py first seen with mtime 1725652582.680709
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\validators.py first seen with mtime 1725652584.2889595
+File C:\Python312\Lib\hmac.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\async_checks.py first seen with mtime 1725652584.2968352
+File C:\App Transporte\backend\venv\Lib\site-packages\asgiref\local.py first seen with mtime 1725652581.8829937
+File C:\Python312\Lib\asyncio\taskgroups.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\tokens.py first seen with mtime 1725652581.5136526
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\postgres\lookups.py first seen with mtime 1725652583.6851842
+File C:\Python312\Lib\email\message.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\inspect.py first seen with mtime 1725652584.5604205
+File C:\App Transporte\backend\venv\Lib\site-packages\django\templatetags\tz.py first seen with mtime 1725652584.5361218
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\signals.py first seen with mtime 1725652584.3503153
+File C:\Python312\Lib\mimetypes.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\templatetags\base.py first seen with mtime 1725652582.6771028
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\migrations\operations\fields.py first seen with mtime 1725652584.3912635
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\__init__.py first seen with mtime 1725652584.3486643
+File C:\Python312\Lib\html\parser.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\version.py first seen with mtime 1725652584.5688465
+File C:\App Transporte\backend\venv\Lib\site-packages\corsheaders\conf.py first seen with mtime 1725656877.2764626
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\security\base.py first seen with mtime 1725652584.3034315
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\mysql\schema.py first seen with mtime 1725652584.3638742
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\base.py first seen with mtime 1725652584.518777
+File C:\Python312\Lib\concurrent\__init__.py first seen with mtime 1722970950.0
+File C:\Python312\DLLs\_ctypes.pyd first seen with mtime 1722970996.0
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\formatter.py first seen with mtime 1725652581.5115736
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\files\utils.py first seen with mtime 1725652584.310125
+File C:\Python312\Lib\__future__.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\__init__.py first seen with mtime 1725652584.3474393
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\password_validation.py first seen with mtime 1725652582.8355763
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\TiffTags.py first seen with mtime 1725723819.4214447
+File C:\Python312\Lib\email\policy.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\wsgiref\simple_server.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\templatetags\i18n.py first seen with mtime 1725652584.5336888
+File C:\App Transporte\backend\venv\Lib\site-packages\corsheaders\defaults.py first seen with mtime 1725656877.277214
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\indexes.py first seen with mtime 1725652584.3988698
+File C:\App Transporte\backend\venv\Lib\site-packages\django\forms\models.py first seen with mtime 1725652584.4246569
+File C:\App Transporte\backend\venv\Lib\site-packages\django\urls\resolvers.py first seen with mtime 1725652584.5448234
+File C:\Python312\Lib\email\mime\nonmultipart.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\utils.py first seen with mtime 1725652584.350955
+File C:\App Transporte\backend\venv\Lib\site-packages\django\middleware\__init__.py first seen with mtime 1725652584.5122752
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\deconstruct.py first seen with mtime 1725652584.5539289
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\decorators.py first seen with mtime 1725652584.5539289
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\utils\field_mapping.py first seen with mtime 1725652591.1447568
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admindocs\views.py first seen with mtime 1725652582.683601
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\files\move.py first seen with mtime 1725652584.308091
+File C:\App Transporte\backend\venv\Lib\site-packages\environ\compat.py first seen with mtime 1725654061.330136
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\dateparse.py first seen with mtime 1725652584.5525422
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\debug.py first seen with mtime 1725652584.574906
+File C:\Python312\Lib\linecache.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\compatibility\django_4_0.py first seen with mtime 1725652584.3027077
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\sql\subqueries.py first seen with mtime 1725652584.418981
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\smartif.py first seen with mtime 1725652584.52531
+File C:\Python312\Lib\asyncio\base_events.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\bz2.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\asyncio\transports.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\sql\where.py first seen with mtime 1725652584.419477
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\loaders\base.py first seen with mtime 1725652584.5307283
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\contenttypes\forms.py first seen with mtime 1725652582.987919
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\staticfiles\management\__init__.py first seen with mtime 1725652584.2807553
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\fields\files.py first seen with mtime 1725652584.4050837
+File C:\Python312\Lib\quopri.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\zoneinfo\_common.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\email\feedparser.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\locale.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\functions\datetime.py first seen with mtime 1725652584.4124818
+File C:\App Transporte\backend\venv\Lib\site-packages\corsheaders\checks.py first seen with mtime 1725656877.2764626
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\migrations\__init__.py first seen with mtime 1725652584.3825734
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\handlers\base.py first seen with mtime 1725652584.3150952
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\schemas\utils.py first seen with mtime 1725652591.0765498
+File C:\Python312\Lib\asyncio\proactor_events.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\engine\statement_splitter.py first seen with mtime 1725652581.5173924
+File C:\Python312\Lib\email\generator.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\middleware\security.py first seen with mtime 1725652584.5167935
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\filters\others.py first seen with mtime 1725652581.5189688
+File C:\App Transporte\backend\venv\Lib\site-packages\psycopg2\errors.py first seen with mtime 1725652581.7705507
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\files\uploadhandler.py first seen with mtime 1725652584.3091128
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\translation\reloader.py first seen with mtime 1725652584.571392
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\mysql\base.py first seen with mtime 1725652584.359171
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\sql\__init__.py first seen with mtime 1725652584.414973
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\sites.py first seen with mtime 1725652582.2846608
+File C:\Python312\Lib\ssl.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\templatetags\log.py first seen with mtime 1725652582.6781619
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\files\storage\handler.py first seen with mtime 1725652584.3124738
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\loader.py first seen with mtime 1725652584.5231004
+File C:\Python312\Lib\asyncio\log.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\parsers.py first seen with mtime 1725652591.0029376
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\functions\math.py first seen with mtime 1725652584.41298
+File C:\Python312\Lib\html\entities.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\base\__init__.py first seen with mtime 1725652584.3514595
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\utils.py first seen with mtime 1725652582.286389
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\metadata.py first seen with mtime 1725652591.0012355
+File C:\Python312\DLLs\_asyncio.pyd first seen with mtime 1722970996.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\contenttypes\models.py first seen with mtime 1725652582.9884222
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\base.py first seen with mtime 1725652584.3950987
+File C:\Python312\Lib\html\__init__.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\files\temp.py first seen with mtime 1725652584.3085966
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\fields\related_lookups.py first seen with mtime 1725652584.40949
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\response.py first seen with mtime 1725652591.0065694
+File C:\Python312\Lib\queue.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\generic\detail.py first seen with mtime 1725652584.5839558
+File C:\Python312\Lib\json\encoder.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\collections\__init__.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\cli.py first seen with mtime 1725652581.510534
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\sites\requests.py first seen with mtime 1725652584.1303976
+File C:\Python312\Lib\asyncio\staggered.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\postgresql\psycopg_any.py first seen with mtime 1725652584.3749566
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\messages\storage\base.py first seen with mtime 1725652583.6795986
+File C:\App Transporte\backend\deliveries\models.py first seen with mtime 1726309242.400177
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\autoreload.py first seen with mtime 1725652584.517785
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\contenttypes\apps.py first seen with mtime 1725652582.9864175
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\compatibility\__init__.py first seen with mtime 1725652584.3022025
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\serializers\python.py first seen with mtime 1725652584.3444278
+File C:\App Transporte\backend\venv\Lib\site-packages\django\forms\renderers.py first seen with mtime 1725652584.4246569
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\generic\list.py first seen with mtime 1725652584.585145
+File C:\Python312\Lib\urllib\__init__.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\files\storage\base.py first seen with mtime 1725652584.3111353
+File C:\App Transporte\backend\venv\Lib\site-packages\django\apps\registry.py first seen with mtime 1725652582.0069563
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\options.py first seen with mtime 1725652582.2846608
+File C:\Python312\Lib\http\cookies.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\utils\encoders.py first seen with mtime 1725652591.144261
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\postgres\forms\ranges.py first seen with mtime 1725652583.696471
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\base\introspection.py first seen with mtime 1725652584.35463
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\formats.py first seen with mtime 1725652584.5572736
+File C:\App Transporte\backend\venv\Lib\site-packages\django\conf\global_settings.py first seen with mtime 1725652582.0084634
+File C:\Python312\Lib\concurrent\futures\__init__.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\email\parser.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\postgres\fields\hstore.py first seen with mtime 1725652583.6925578
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\migrations\state.py first seen with mtime 1725652584.3890092
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\messages\utils.py first seen with mtime 1725652583.6775773
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\fields\__init__.py first seen with mtime 1725652584.4045486
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\functional.py first seen with mtime 1725652584.55818
+File C:\App Transporte\backend\venv\Lib\site-packages\corsheaders\__init__.py first seen with mtime 1725656877.2747064
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\management\base.py first seen with mtime 1725652584.3238535
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\fields.py first seen with mtime 1725652590.9997418
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\loaders\filesystem.py first seen with mtime 1725652584.531226
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\schemas\openapi.py first seen with mtime 1725652591.0760465
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\base\features.py first seen with mtime 1725652584.354128
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\loaders\app_directories.py first seen with mtime 1725652584.5298302
+File C:\App Transporte\backend\deliveries\apps.py first seen with mtime 1725654336.7026672
+File C:\Python312\Lib\_compression.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\messages\storage\__init__.py first seen with mtime 1725652583.679103
+File C:\Python312\Lib\re\_constants.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\psycopg2\__init__.py first seen with mtime 1725652581.7526844
+File C:\App Transporte\backend\venv\Lib\site-packages\environ\fileaware_mapping.py first seen with mtime 1725654061.3311384
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\fields\generated.py first seen with mtime 1725652584.4050837
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\engine\__init__.py first seen with mtime 1725652581.5155685
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\files\images.py first seen with mtime 1725652584.306746
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\security\__init__.py first seen with mtime 1725652584.3034315
+File C:\Python312\DLLs\_hashlib.pyd first seen with mtime 1722970996.0
+File C:\App Transporte\backend\venv\Lib\site-packages\MySQLdb\constants\CLIENT.py first seen with mtime 1725655957.7453496
+File C:\Python312\Lib\asyncio\base_futures.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\filters\reindent.py first seen with mtime 1725652581.5199742
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\settings.py first seen with mtime 1725652591.0088594
+File C:\Python312\Lib\urllib\response.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\__init__.py first seen with mtime 1725652584.517289
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\manager.py first seen with mtime 1725652584.3999763
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\_binary.py first seen with mtime 1725723819.4258552
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\mysql\client.py first seen with mtime 1725652584.3601832
+File C:\App Transporte\backend\venv\Lib\site-packages\django\forms\__init__.py first seen with mtime 1725652584.421991
+File C:\App Transporte\backend\venv\Lib\site-packages\django\middleware\cache.py first seen with mtime 1725652584.5127785
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\cache\backends\locmem.py first seen with mtime 1725652584.2946887
+File C:\Python312\Lib\logging\__init__.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\files\storage\filesystem.py first seen with mtime 1725652584.3111353
+File C:\Python312\Lib\email\quoprimime.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\decorators.py first seen with mtime 1725652590.99773
+File C:\Python312\Lib\difflib.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\renderers.py first seen with mtime 1725652591.0050797
+File C:\Python312\Lib\socket.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\asyncio\coroutines.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\staticfiles\finders.py first seen with mtime 1725652584.275695
+File C:\Python312\Lib\gettext.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\forms\widgets.py first seen with mtime 1725652584.4270146
+File C:\App Transporte\backend\venv\Lib\site-packages\django\forms\forms.py first seen with mtime 1725652584.423493
+File C:\Python312\Lib\ctypes\wintypes.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\urls\base.py first seen with mtime 1725652584.5428085
+File C:\Python312\Lib\secrets.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\crypto.py first seen with mtime 1725652584.551076
+File C:\App Transporte\backend\venv\Lib\site-packages\django\forms\boundfield.py first seen with mtime 1725652584.422493
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\_imaging.cp312-win_amd64.pyd first seen with mtime 1725723819.4389222
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\fields\mixins.py first seen with mtime 1725652584.406793
+File C:\App Transporte\backend\venv\Lib\site-packages\psycopg2\extensions.py first seen with mtime 1725652581.7715514
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\functions\comparison.py first seen with mtime 1725652584.4119792
+File C:\Python312\Lib\concurrent\futures\_base.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\timesince.py first seen with mtime 1725652584.5674405
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\handlers\exception.py first seen with mtime 1725652584.3160057
+File C:\App Transporte\backend\venv\Lib\site-packages\django\urls\exceptions.py first seen with mtime 1725652584.5443273
+File C:\App Transporte\backend\venv\Lib\site-packages\django\apps\config.py first seen with mtime 1725652582.0057845
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\files\storage\memory.py first seen with mtime 1725652584.3129768
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\utils\json.py first seen with mtime 1725652591.1469944
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\generic\dates.py first seen with mtime 1725652584.5839558
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\__init__.py first seen with mtime 1725652581.5090387
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\mysql\operations.py first seen with mtime 1725652584.3628693
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\validators.py first seen with mtime 1725652591.0111554
+File C:\Python312\Lib\asyncio\base_subprocess.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\security\sessions.py first seen with mtime 1725652584.3046584
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\functions\__init__.py first seen with mtime 1725652584.4114835
+File C:\App Transporte\backend\manage.py first seen with mtime 1725652747.8434083
+File C:\App Transporte\backend\venv\Lib\site-packages\MySQLdb\times.py first seen with mtime 1725655957.7444975
+File C:\App Transporte\backend\venv\Lib\site-packages\corsheaders\middleware.py first seen with mtime 1725656877.277214
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\postgres\fields\jsonb.py first seen with mtime 1725652583.6933012
+File C:\App Transporte\backend\venv\Lib\site-packages\django\conf\urls\static.py first seen with mtime 1725652582.276599
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\translation\trans_real.py first seen with mtime 1725652584.5728936
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\contenttypes\views.py first seen with mtime 1725652582.9894316
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\decorators\cache.py first seen with mtime 1725652584.577967
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\lexer.py first seen with mtime 1725652581.5126426
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\postgres\forms\hstore.py first seen with mtime 1725652583.6959672
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\decorators\debug.py first seen with mtime 1725652584.580286
+File C:\Python312\Lib\email\__init__.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\autoreload.py first seen with mtime 1725652584.5480688
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\sessions\base_session.py first seen with mtime 1725652583.9793248
+File C:\Python312\Lib\pickle.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\__init__.py first seen with mtime 1725652584.285743
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\filters\__init__.py first seen with mtime 1725652581.5173924
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\registry.py first seen with mtime 1725652584.2999592
+File C:\Python312\Lib\asyncio\windows_utils.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\context.py first seen with mtime 1725652584.518777
+File C:\Python312\Lib\contextvars.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\fields\related.py first seen with mtime 1725652584.40849
+File C:\App Transporte\backend\deliveries\__init__.py first seen with mtime 1725654336.7177486
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\fields\reverse_related.py first seen with mtime 1725652584.4099863
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\views\autocomplete.py first seen with mtime 1725652582.6791935
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\utils.py first seen with mtime 1725652581.514758
+File C:\Python312\DLLs\_zoneinfo.pyd first seen with mtime 1722970996.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\postgres\fields\ranges.py first seen with mtime 1725652583.6933012
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\asyncio.py first seen with mtime 1725652584.5475664
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\lorem_ipsum.py first seen with mtime 1725652584.563247
+File C:\Python312\Lib\asyncio\queues.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\wsgiref\headers.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\conf\locale\__init__.py first seen with mtime 1725652582.0135608
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\log.py first seen with mtime 1725652584.562585
+File C:\Python312\DLLs\_socket.pyd first seen with mtime 1722970996.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\http\response.py first seen with mtime 1725652584.5111997
+File C:\Python312\Lib\wsgiref\util.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\urls\converters.py first seen with mtime 1725652584.543831
+File C:\Python312\Lib\contextlib.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\backends.py first seen with mtime 1725652582.8296614
+File C:\Python312\Lib\email\mime\multipart.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\tokens.py first seen with mtime 1725652582.8365831
+File C:\App Transporte\backend\venv\Lib\site-packages\psycopg2\sql.py first seen with mtime 1725652581.7731605
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\numberformat.py first seen with mtime 1725652584.5645437
+File C:\App Transporte\backend\deliveries\serializers.py first seen with mtime 1726308569.1140378
+File C:\Python312\Lib\subprocess.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\sql\query.py first seen with mtime 1725652584.4179895
+File C:\Python312\Lib\email\_policybase.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\__init__.py first seen with mtime 1725723819.4248507
+File C:\Python312\Lib\http\client.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\signals.py first seen with mtime 1725652584.4028962
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\checks.py first seen with mtime 1725652582.2798145
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\hashable.py first seen with mtime 1725652584.558678
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\authentication.py first seen with mtime 1725652590.9962254
+File C:\Python312\Lib\signal.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\asyncio\mixins.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\uuid.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\zoneinfo\_tzpath.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\negotiation.py first seen with mtime 1725652591.0024326
+File C:\App Transporte\backend\venv\Lib\site-packages\django\urls\__init__.py first seen with mtime 1725652584.542304
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\query.py first seen with mtime 1725652584.4014738
+File C:\Python312\Lib\wsgiref\__init__.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\asyncio\futures.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\dis.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\actions.py first seen with mtime 1725652582.278731
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\_typing.py first seen with mtime 1725723819.4592261
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\postgres\utils.py first seen with mtime 1725652583.6877358
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\migrations\utils.py first seen with mtime 1725652584.3890092
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\sessions\backends\base.py first seen with mtime 1725652583.9829357
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\migrations\migration.py first seen with mtime 1725652584.3863413
+File C:\App Transporte\backend\venv\Lib\site-packages\corsheaders\signals.py first seen with mtime 1725656877.2784398
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\handlers\asgi.py first seen with mtime 1725652584.3139808
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\staticfiles\__init__.py first seen with mtime 1725652584.2731671
+File C:\App Transporte\backend\venv\Lib\site-packages\django\shortcuts.py first seen with mtime 1725652582.0052798
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\staticfiles\apps.py first seen with mtime 1725652584.274179
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\module_loading.py first seen with mtime 1725652584.563247
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\generic\__init__.py first seen with mtime 1725652584.5824592
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\compat.py first seen with mtime 1725652590.997227
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\enums.py first seen with mtime 1725652584.3965838
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\generic\base.py first seen with mtime 1725652584.5829635
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\signals.py first seen with mtime 1725652584.287913
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\postgres\fields\array.py first seen with mtime 1725652583.69099
+File C:\Python312\Lib\logging\handlers.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\__init__.py first seen with mtime 1725652582.0029848
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\generic\edit.py first seen with mtime 1725652584.585145
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\loader_tags.py first seen with mtime 1725652584.524104
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\contenttypes\checks.py first seen with mtime 1725652582.9869132
+File C:\Python312\Lib\enum.py first seen with mtime 1722970950.0
+File C:\Python312\DLLs\_decimal.pyd first seen with mtime 1722970996.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\engine.py first seen with mtime 1725652584.5214818
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\postgres\fields\utils.py first seen with mtime 1725652583.6941886
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\contenttypes\__init__.py first seen with mtime 1725652582.9854128
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admindocs\utils.py first seen with mtime 1725652582.6828077
+File C:\Python312\Lib\http\__init__.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\utils\formatting.py first seen with mtime 1725652591.1452525
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\messages\__init__.py first seen with mtime 1725652583.6736643
+File C:\Python312\Lib\asyncio\events.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\sql\constants.py first seen with mtime 1725652584.4164834
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\apps.py first seen with mtime 1725652582.278731
+File C:\App Transporte\backend\venv\Lib\site-packages\django\conf\urls\__init__.py first seen with mtime 1725652582.2739868
+File C:\Python312\Lib\pprint.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\contenttypes\fields.py first seen with mtime 1725652582.9874167
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\loaders\__init__.py first seen with mtime 1725652584.5293274
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\postgres\forms\array.py first seen with mtime 1725652583.694687
+File C:\App Transporte\backend\venv\Lib\site-packages\MySQLdb\constants\__init__.py first seen with mtime 1725655957.7485938
+File C:\Python312\Lib\email\header.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\datastructures.py first seen with mtime 1725652584.551076
+File C:\App Transporte\backend\venv\Lib\site-packages\django\forms\formsets.py first seen with mtime 1725652584.423493
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\tree.py first seen with mtime 1725652584.5688465
+File C:\Python312\Lib\ipaddress.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\psycopg2\_json.py first seen with mtime 1725652581.7544262
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\filters\right_margin.py first seen with mtime 1725652581.5199742
+File C:\Python312\Lib\email\charset.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\email\mime\__init__.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\postgres\search.py first seen with mtime 1725652583.6861763
+File C:\App Transporte\backend\venv\Lib\site-packages\django\urls\utils.py first seen with mtime 1725652584.5448234
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\choices.py first seen with mtime 1725652584.549062
+File C:\App Transporte\backend\venv\Lib\site-packages\django\http\__init__.py first seen with mtime 1725652584.5092013
+File C:\Python312\Lib\traceback.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\__init__.py first seen with mtime 1725652584.296333
+File C:\Python312\Lib\_weakrefset.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\asgiref\current_thread_executor.py first seen with mtime 1725652581.8829937
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\constraints.py first seen with mtime 1725652584.3960865
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\timezone.py first seen with mtime 1725652584.5683475
+File C:\App Transporte\backend\venv\Lib\site-packages\django\templatetags\__init__.py first seen with mtime 1725652584.5328991
+File C:\Python312\Lib\weakref.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\schemas\__init__.py first seen with mtime 1725652591.0737717
+File C:\Python312\Lib\json\scanner.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\email\encoders.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\re\_casefix.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\textwrap.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\http\multipartparser.py first seen with mtime 1725652584.510208
+File C:\Python312\Lib\encodings\__init__.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\signals.py first seen with mtime 1725652582.8360791
+File C:\Python312\Lib\hashlib.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\serializers\base.py first seen with mtime 1725652584.3429182
+File C:\App Transporte\backend\venv\Lib\site-packages\MySQLdb\converters.py first seen with mtime 1725655957.7430096
+File C:\App Transporte\backend\venv\Lib\site-packages\django\apps\__init__.py first seen with mtime 1725652582.0057845
+File C:\Python312\Lib\asyncio\constants.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\status.py first seen with mtime 1725652591.0093656
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\ipv6.py first seen with mtime 1725652584.5609183
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\sites\__init__.py first seen with mtime 1725652584.1263647
+File C:\App Transporte\backend\venv\Lib\site-packages\django\conf\__init__.py first seen with mtime 1725652582.0079646
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\response.py first seen with mtime 1725652584.524104
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\__init__.py first seen with mtime 1725652590.9951327
+File C:\Python312\Lib\zoneinfo\__init__.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\staticfiles\utils.py first seen with mtime 1725652584.2786655
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\backends\django.py first seen with mtime 1725652584.5273218
+File C:\Python312\Lib\heapq.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\base_user.py first seen with mtime 1725652582.830157
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\views\__init__.py first seen with mtime 1725652582.6786652
+File C:\Python312\DLLs\_overlapped.pyd first seen with mtime 1722970996.0
+File C:\Python312\Lib\reprlib.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\_version.py first seen with mtime 1725723819.4602344
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\postgres\fields\__init__.py first seen with mtime 1725652583.69099
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\_deprecate.py first seen with mtime 1725723819.4273062
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\relations.py first seen with mtime 1725652591.0039418
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\viewsets.py first seen with mtime 1725652591.0134723
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\utils\urls.py first seen with mtime 1725652591.1501071
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\middleware.py first seen with mtime 1725652582.8339393
+File C:\Python312\Lib\asyncio\runners.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\urllib\parse.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\files\storage\mixins.py first seen with mtime 1725652584.3129768
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\servers\basehttp.py first seen with mtime 1725652584.346936
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\messages\middleware.py first seen with mtime 1725652583.6767292
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\mysql\features.py first seen with mtime 1725652584.3612316
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\fields\json.py first seen with mtime 1725652584.4062889
+File C:\Python312\Lib\copy.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\sessions\middleware.py first seen with mtime 1725652583.9808145
+File C:\App Transporte\backend\venv\Lib\site-packages\django\middleware\common.py first seen with mtime 1725652584.5137968
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\utils\serializer_helpers.py first seen with mtime 1725652591.149098
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\exceptions.py first seen with mtime 1725652582.2809615
+File C:\Python312\Lib\email\iterators.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\migrations\operations\special.py first seen with mtime 1725652584.393077
+File C:\Python312\Lib\re\_compiler.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\http\request.py first seen with mtime 1725652584.5111997
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\mail\utils.py first seen with mtime 1725652584.3180003
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\postgres\validators.py first seen with mtime 1725652583.6877358
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\migrations\operations\models.py first seen with mtime 1725652584.3925736
+File C:\Python312\Lib\datetime.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\safestring.py first seen with mtime 1725652584.5650568
+File C:\Python312\Lib\pathlib.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\_compat_pickle.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\cache.py first seen with mtime 1725652584.549062
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\ExifTags.py first seen with mtime 1725723819.37004
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\mysql\__init__.py first seen with mtime 1725652584.359171
+File C:\Python312\Lib\dataclasses.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\warnings.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\dispatch\dispatcher.py first seen with mtime 1725652584.4204834
+File C:\Python312\Lib\encodings\utf_8.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\servers\__init__.py first seen with mtime 1725652584.3464398
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\staticfiles\management\commands\__init__.py first seen with mtime 1725652584.281253
+File C:\App Transporte\backend\venv\Lib\site-packages\asgiref\__init__.py first seen with mtime 1725652581.882
+File C:\Python312\Lib\importlib\__init__.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\migrations\exceptions.py first seen with mtime 1725652584.3840826
+File C:\Python312\Lib\tokenize.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\middleware\clickjacking.py first seen with mtime 1725652584.513294
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\serializers.py first seen with mtime 1725652591.0077155
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\templatetags\admin_modify.py first seen with mtime 1725652582.6771028
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\database.py first seen with mtime 1725652584.2978396
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\__init__.py first seen with mtime 1725652582.2775996
+File C:\Python312\Lib\asyncio\base_tasks.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\exceptions.py first seen with mtime 1725652584.285743
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\contenttypes\admin.py first seen with mtime 1725652582.9859154
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\models.py first seen with mtime 1725652582.8350737
+File C:\Python312\Lib\collections\abc.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\http\server.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\shutil.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\functions\window.py first seen with mtime 1725652584.414477
+File C:\Python312\DLLs\_lzma.pyd first seen with mtime 1722970996.0
+File C:\Python312\Lib\operator.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\sessions\exceptions.py first seen with mtime 1725652583.979823
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\wsgi.py first seen with mtime 1725652584.2889595
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\files\storage\__init__.py first seen with mtime 1725652584.3106377
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\messages\constants.py first seen with mtime 1725652583.6757374
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\urls.py first seen with mtime 1725652584.3009868
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\messages\apps.py first seen with mtime 1725652583.675241
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\templatetags\admin_urls.py first seen with mtime 1725652582.6771028
+File C:\Python312\DLLs\_wmi.pyd first seen with mtime 1722970996.0
+File C:\Python312\Lib\token.py first seen with mtime 1722970952.0
+File C:\Python312\DLLs\_queue.pyd first seen with mtime 1722970996.0
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\utils\html.py first seen with mtime 1725652591.1457553
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\management\color.py first seen with mtime 1725652584.3238535
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\defaulttags.py first seen with mtime 1725652584.5214818
+File C:\Python312\Lib\asyncio\windows_events.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\dateformat.py first seen with mtime 1725652584.5520442
+File C:\Python312\Lib\decimal.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\postgres\fields\citext.py first seen with mtime 1725652583.6920555
+File C:\App Transporte\backend\venv\Lib\site-packages\environ\environ.py first seen with mtime 1725654061.3306406
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\deletion.py first seen with mtime 1725652584.3965838
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\contenttypes\management\__init__.py first seen with mtime 1725652583.1232245
+File C:\App Transporte\backend\venv\Lib\site-packages\django\forms\fields.py first seen with mtime 1725652584.422989
+File C:\Python312\Lib\ast.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\concurrent\futures\thread.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\selectors.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\asyncio\sslproto.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\socketserver.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\translation\__init__.py first seen with mtime 1725652584.5708878
+File C:\Python312\DLLs\_ssl.pyd first seen with mtime 1722970996.0
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\sql.py first seen with mtime 1725652581.5136526
+File C:\Python312\Lib\encodings\aliases.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\helpers.py first seen with mtime 1725652582.2831483
+File C:\Python312\Lib\urllib\request.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\api\urls.py first seen with mtime 1725792897.7679179
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\engine\filter_stack.py first seen with mtime 1725652581.5160675
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\mysql\creation.py first seen with mtime 1725652584.3612316
+File C:\Python312\Lib\logging\config.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\management\__init__.py first seen with mtime 1725652582.9748492
+File C:\App Transporte\backend\venv\Lib\site-packages\django\utils\_os.py first seen with mtime 1725652584.546573
+File C:\Python312\Lib\re\_parser.py first seen with mtime 1722970952.0
+File C:\Python312\Lib\asyncio\selector_events.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\psycopg2\_range.py first seen with mtime 1725652581.7695594
+File C:\App Transporte\backend\venv\Lib\site-packages\django\templatetags\l10n.py first seen with mtime 1725652584.5346262
+File C:\App Transporte\backend\venv\Lib\site-packages\psycopg2\_ipaddress.py first seen with mtime 1725652581.7526844
+File C:\Python312\Lib\asyncio\format_helpers.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\sessions\apps.py first seen with mtime 1725652583.9786677
+File C:\App Transporte\backend\venv\Lib\site-packages\django\templatetags\cache.py first seen with mtime 1725652584.5328991
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\views.py first seen with mtime 1725652582.838085
+File C:\Python312\Lib\platform.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\exceptions.py first seen with mtime 1725652590.9987354
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\cache\backends\filebased.py first seen with mtime 1725652584.2936945
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\utils.py first seen with mtime 1725652584.52531
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\utils\breadcrumbs.py first seen with mtime 1725652591.143763
+File C:\Python312\Lib\asyncio\tasks.py first seen with mtime 1722970950.0
+File C:\Python312\Lib\email\mime\message.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\checks\templates.py first seen with mtime 1725652584.3004892
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\query_utils.py first seen with mtime 1725652584.4023986
+File C:\Python312\Lib\email\mime\text.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\sqlparse\filters\output.py first seen with mtime 1725652581.5189688
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\messages\api.py first seen with mtime 1725652583.6747434
+File C:\App Transporte\backend\venv\Lib\site-packages\rest_framework\utils\representation.py first seen with mtime 1725652591.1480875
+File C:\App Transporte\backend\venv\Lib\site-packages\django\template\loaders\cached.py first seen with mtime 1725652584.531226
+File C:\Python312\Lib\keyword.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\cache\backends\__init__.py first seen with mtime 1725652584.2913306
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\apps.py first seen with mtime 1725652582.8291636
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\ImageMode.py first seen with mtime 1725723819.3940787
+File C:\App Transporte\backend\venv\Lib\site-packages\psycopg2\extras.py first seen with mtime 1725652581.7715514
+File C:\App Transporte\backend\venv\Lib\site-packages\django\views\decorators\common.py first seen with mtime 1725652584.5792947
+File C:\App Transporte\backend\venv\Lib\site-packages\django\core\handlers\wsgi.py first seen with mtime 1725652584.3165038
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\sql\datastructures.py first seen with mtime 1725652584.4169867
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\sessions\migrations\__init__.py first seen with mtime 1725652584.1228456
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\migrations\0003_alter_user_email_max_length.py first seen with mtime 1725652582.9778666
+File C:\Python312\Lib\stringprep.py first seen with mtime 1722970952.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\sessions\backends\db.py first seen with mtime 1725652583.98455
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\contenttypes\migrations\0002_remove_content_type_name.py first seen with mtime 1725652583.1249588
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\migrations\0001_initial.py first seen with mtime 1725652582.9773638
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\migrations\0010_alter_group_name_max_length.py first seen with mtime 1725652582.9818945
+File C:\Python312\Lib\encodings\idna.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\migrations\executor.py first seen with mtime 1725652584.3840826
+File C:\App Transporte\backend\deliveries\migrations\__init__.py first seen with mtime 1725903893.7458844
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\migrations\0012_alter_user_first_name_max_length.py first seen with mtime 1725652582.982899
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\migrations\0008_alter_user_username_max_length.py first seen with mtime 1725652582.9808886
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\migrations\loader.py first seen with mtime 1725652584.3851602
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\migrations\0011_update_proxy_permissions.py first seen with mtime 1725652582.9823973
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\migrations\recorder.py first seen with mtime 1725652584.3873541
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\migrations\0005_alter_user_last_login_null.py first seen with mtime 1725652582.979388
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\migrations\0003_logentry_add_action_flag_choices.py first seen with mtime 1725652582.571155
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\migrations\0006_require_contenttypes_0002.py first seen with mtime 1725652582.9798906
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\migrations\0001_initial.py first seen with mtime 1725652582.5698798
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\sessions\migrations\0001_initial.py first seen with mtime 1725652584.1223488
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\migrations\0002_logentry_remove_auto_add.py first seen with mtime 1725652582.5698798
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\backends\mysql\compiler.py first seen with mtime 1725652584.3606856
+File C:\App Transporte\backend\deliveries\migrations\0002_delivery_client_number_alter_delivery_issues.py first seen with mtime 1726271259.5682762
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\migrations\0004_alter_user_username_opts.py first seen with mtime 1725652582.9788752
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\migrations\graph.py first seen with mtime 1725652584.3851602
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\migrations\0007_alter_validators_add_error_messages.py first seen with mtime 1725652582.980393
+File C:\App Transporte\backend\deliveries\migrations\0003_delivery_is_resolved_delivery_visit_type.py first seen with mtime 1726272644.2185614
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\contenttypes\migrations\__init__.py first seen with mtime 1725652583.1259632
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\contenttypes\migrations\0001_initial.py first seen with mtime 1725652583.1249588
+File C:\App Transporte\backend\project\wsgi.py first seen with mtime 1725652747.8590121
+File C:\App Transporte\backend\deliveries\migrations\0001_initial.py first seen with mtime 1726263690.3311698
+File C:\App Transporte\backend\venv\Lib\site-packages\MySQLdb\cursors.py first seen with mtime 1725655957.743505
+File C:\App Transporte\backend\venv\Lib\site-packages\django\db\models\sql\compiler.py first seen with mtime 1725652584.4159772
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\migrations\0002_alter_permission_name_max_length.py first seen with mtime 1725652582.9778666
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\migrations\0009_alter_user_last_name_max_length.py first seen with mtime 1725652582.9813912
+File C:\App Transporte\backend\venv\Lib\site-packages\MySQLdb\connections.py first seen with mtime 1725655957.742511
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\admin\migrations\__init__.py first seen with mtime 1725652582.571662
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\auth\migrations\__init__.py first seen with mtime 1725652582.982899
+"OPTIONS /api/deliveries/ HTTP/1.1" 200 0
+Bad Request: /api/deliveries/
+"POST /api/deliveries/ HTTP/1.1" 400 49
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\features.py first seen with mtime 1725723819.4637227
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\PsdImagePlugin.py first seen with mtime 1725723819.4150007
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\GimpPaletteFile.py first seen with mtime 1725723819.3774133
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\PixarImagePlugin.py first seen with mtime 1725723819.4139347
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\PaletteFile.py first seen with mtime 1725723819.4089494
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\FtexImagePlugin.py first seen with mtime 1725723819.37379
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\PalmImagePlugin.py first seen with mtime 1725723819.409961
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\PcdImagePlugin.py first seen with mtime 1725723819.4104815
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\FitsImagePlugin.py first seen with mtime 1725723819.371272
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\IptcImagePlugin.py first seen with mtime 1725723819.403128
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\PpmImagePlugin.py first seen with mtime 1725723819.4150007
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\_webp.cp312-win_amd64.pyd first seen with mtime 1725723819.4632196
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\SunImagePlugin.py first seen with mtime 1725723819.418819
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\messages\storage\fallback.py first seen with mtime 1725652583.6800947
+File C:\Python312\Lib\fractions.py first seen with mtime 1722970950.0
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\FliImagePlugin.py first seen with mtime 1725723819.3722827
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\SpiderImagePlugin.py first seen with mtime 1725723819.418316
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\ImageColor.py first seen with mtime 1725723819.3869605
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\JpegPresets.py first seen with mtime 1725723819.4052632
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\ImageChops.py first seen with mtime 1725723819.3843198
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\QoiImagePlugin.py first seen with mtime 1725723819.4173238
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\PdfParser.py first seen with mtime 1725723819.4129295
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\ImageSequence.py first seen with mtime 1725723819.3984907
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\DdsImagePlugin.py first seen with mtime 1725723819.3695428
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\IcoImagePlugin.py first seen with mtime 1725723819.3817663
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\_imagingmath.cp312-win_amd64.pyd first seen with mtime 1725723819.4550743
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\GimpGradientFile.py first seen with mtime 1725723819.3769183
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\GribStubImagePlugin.py first seen with mtime 1725723819.3774133
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\ImageFile.py first seen with mtime 1725723819.3892016
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\ImtImagePlugin.py first seen with mtime 1725723819.403128
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\WmfImagePlugin.py first seen with mtime 1725723819.4232216
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\GifImagePlugin.py first seen with mtime 1725723819.3763368
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\Hdf5StubImagePlugin.py first seen with mtime 1725723819.3792462
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\messages\storage\cookie.py first seen with mtime 1725652583.6800947
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\sessions\serializers.py first seen with mtime 1725652583.9808145
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\WebPImagePlugin.py first seen with mtime 1725723819.4219418
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\MpoImagePlugin.py first seen with mtime 1725723819.4077673
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\PdfImagePlugin.py first seen with mtime 1725723819.4124248
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\TiffImagePlugin.py first seen with mtime 1725723819.420949
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\IcnsImagePlugin.py first seen with mtime 1725723819.3802676
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\XpmImagePlugin.py first seen with mtime 1725723819.4248507
+File C:\App Transporte\backend\venv\Lib\site-packages\django\contrib\messages\storage\session.py first seen with mtime 1725652583.6811986
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\McIdasImagePlugin.py first seen with mtime 1725723819.4057665
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\ImImagePlugin.py first seen with mtime 1725723819.3822658
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\JpegImagePlugin.py first seen with mtime 1725723819.4047327
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\TgaImagePlugin.py first seen with mtime 1725723819.4193177
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\DcxImagePlugin.py first seen with mtime 1725723819.3690467
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\BufrStubImagePlugin.py first seen with mtime 1725723819.367021
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\GbrImagePlugin.py first seen with mtime 1725723819.37379
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\BlpImagePlugin.py first seen with mtime 1725723819.3645554
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\ImageMath.py first seen with mtime 1725723819.393063
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\ImageOps.py first seen with mtime 1725723819.3953688
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\PngImagePlugin.py first seen with mtime 1725723819.4139347
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\Jpeg2KImagePlugin.py first seen with mtime 1725723819.4042284
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\MspImagePlugin.py first seen with mtime 1725723819.4077673
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\CurImagePlugin.py first seen with mtime 1725723819.3685408
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\SgiImagePlugin.py first seen with mtime 1725723819.4178197
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\XbmImagePlugin.py first seen with mtime 1725723819.4243464
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\PcxImagePlugin.py first seen with mtime 1725723819.4113524
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\BmpImagePlugin.py first seen with mtime 1725723819.3660295
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\MpegImagePlugin.py first seen with mtime 1725723819.4072719
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\ImagePalette.py first seen with mtime 1725723819.396263
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\XVThumbImagePlugin.py first seen with mtime 1725723819.4232216
+File C:\App Transporte\backend\venv\Lib\site-packages\PIL\EpsImagePlugin.py first seen with mtime 1725723819.37004
+File C:\App Transporte\backend\project\settings.py previous mtime: 1726311722.4636943, current mtime: 1726311781.3982644
+C:\App Transporte\backend\project\settings.py notified as changed. Signal results: [(<function template_changed at 0x0000016A591C59E0>, None), (<function translation_file_changed at 0x0000016A5A0CF7E0>, None)].
+C:\App Transporte\backend\project\settings.py changed, reloading.

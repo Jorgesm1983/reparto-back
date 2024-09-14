@@ -19,9 +19,14 @@ class DeliveryCreateView(APIView):
     serializer_class = DeliverySerializer
     
     def post(self, request, *args, **kwargs):
+        if request.data.get('visit_type') in ['verification', 'resolution']:
+            request.data.pop('issues', None)
+        
         serializer = DeliverySerializer(data=request.data)
         if serializer.is_valid():
-            instance = serializer.save()
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        print("Errores", serializer.errors)  # Imprime los errores de validación
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

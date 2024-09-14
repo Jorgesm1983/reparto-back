@@ -130,19 +130,27 @@ def get_issue_photo_upload_to(instance, filename):
     return upload_to(instance, filename, f'issues/{instance.delivery.fiscal_year}_{instance.delivery.delivery_number}')
 
 class Delivery(models.Model):
+    VISIT_TYPE_CHOICES = [
+        ('delivery', 'Entrega'),
+        ('verification', 'Verificación'),
+        ('resolution', 'Resolución'),
+    ]
+    visit_type = models.CharField(max_length=20, choices=VISIT_TYPE_CHOICES, default='delivery')
+    client_number = models.PositiveIntegerField()  # Almacena el número del cliente directamente
     fiscal_year = models.CharField(max_length=4)
     delivery_number = models.PositiveIntegerField()
     client_conformity = models.BooleanField(default=True)
     has_issue = models.BooleanField(default=False)
     observations = models.TextField(blank=True, null=True)
     issues = models.JSONField(default=list, blank=True)
+    is_resolved = models.BooleanField(default=False)  # Nuevo campo para indicar si la incidencia está resuelta
     delivery_images = models.ManyToManyField('DeliveryImage', blank=True)
     issue_photos = models.ManyToManyField('IssuePhoto', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)  # Fecha y hora de creación
     updated_at = models.DateTimeField(auto_now=True)      # Fecha y hora de la última actualización
     
     def __str__(self):
-        return f"Albarán {self.fiscal_year}/{self.delivery_number}"
+        return f"Albarán {self.fiscal_year}/{self.delivery_number} - Cliente {self.client_number}"
 
 class DeliveryImage(models.Model):
     image = models.ImageField(upload_to=get_delivery_image_upload_to)
