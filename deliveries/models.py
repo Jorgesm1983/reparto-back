@@ -102,6 +102,7 @@
 import os
 from django.db import models
 from django.core.files.storage import default_storage
+from django.contrib.auth.models import User
 
 def get_incremental_filename(folder_path, base_filename, file_ext):
     """Genera un nombre de archivo único en base a un nombre base y una carpeta."""
@@ -153,6 +154,9 @@ class Delivery(models.Model):
     issue_photos = models.ManyToManyField('IssuePhoto', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)  # Fecha y hora de creación
     updated_at = models.DateTimeField(auto_now=True)      # Fecha y hora de la última actualización
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Relaciona el Delivery con el usuario
+    visit_type = models.CharField(max_length=20, choices=VISIT_TYPE_CHOICES, default='delivery')
+    
     
     def __str__(self):
         return f"Albarán {self.fiscal_year}/{self.delivery_number} - Cliente {self.client_number}"
