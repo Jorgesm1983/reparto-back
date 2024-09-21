@@ -19,6 +19,7 @@ class DeliveryCreateView(APIView):
     serializer_class = DeliverySerializer
     
     def post(self, request, *args, **kwargs):
+        print("Datos de la solicitud:", request.data)
         if request.data.get('visit_type') in ['verification', 'resolution']:
             request.data.pop('issues', None)
         

@@ -119,6 +119,11 @@ def upload_to(instance, filename, folder_name):
     folder_path = os.path.join('media', folder_name)
     base_filename = f"{instance.delivery.fiscal_year}_{instance.delivery.delivery_number}"
     new_filename = get_incremental_filename(folder_path, base_filename, file_ext)
+    full_folder_path = os.path.join('media', folder_name)
+    if not os.path.exists(full_folder_path):
+        os.makedirs(full_folder_path)
+        print(f"Carpeta creada: {full_folder_path}")
+
     return os.path.join(folder_name, new_filename)
 
 def get_delivery_image_upload_to(instance, filename):
