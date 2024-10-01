@@ -17,7 +17,7 @@
    
    
 from django.contrib import admin
-from .models import Delivery, DeliveryImage, IssuePhoto
+from .models import Delivery, DeliveryImage, IssuePhoto, Customer, EmailNotificationFailure, Product
 
 @admin.register(Delivery)
 class DeliveryAdmin(admin.ModelAdmin):
@@ -35,5 +35,16 @@ class DeliveryImageAdmin(admin.ModelAdmin):
 class IssuePhotoAdmin(admin.ModelAdmin):
     list_display = ('id', 'image')  # Si quieres mostrar un campo adicional, como el número de producto, debes agregarlo aquí.
 
+@admin.register(Customer)  # Registra el modelo Customer en el admin
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ('client_number', 'name', 'email')
 
+@admin.register(EmailNotificationFailure)
+class EmailNotificationFailureAdmin(admin.ModelAdmin):
+    list_display = ('customer', 'timestamp', 'reason')
+    list_filter = ('customer', 'timestamp')
 
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('product_number', 'description', 'supplier_number', 'supplier_name')
+    search_fields = ('product_number', 'description')

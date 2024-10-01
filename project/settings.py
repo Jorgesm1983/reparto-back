@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import environ
 import os
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -155,7 +156,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.40']
 
-CORS_ALLOW_ALL_ORIGINS = False  # Cambiar a False si usas CORS_ALLOWED_ORIGINS
+CORS_ALLOW_ALL_ORIGINS = True  # Cambiar a False si usas CORS_ALLOWED_ORIGINS
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://localhost:8000',
@@ -196,3 +197,10 @@ CORS_ALLOW_CREDENTIALS = False  # Si estás enviando cookies o autenticación
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'info.wowmalaga@gmail.com'
+EMAIL_HOST_PASSWORD = 'ezqg bexe trno pwsu'
+DEFAULT_FROM_EMAIL = 'info.wowmalaga@mubak.com'

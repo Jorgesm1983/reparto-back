@@ -141,6 +141,13 @@ class Delivery(models.Model):
         ('verification', 'Verificación'),
         ('resolution', 'Resolución'),
     ]
+    
+    # Relación con el cliente
+    customer = models.ForeignKey('Customer', on_delete=models.CASCADE, null=True, blank=True)  # Relaciona la entrega con el cliente
+    
+    # Relación con el usuario que registra la entrega
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # Relaciona la entrega con el usuario autenticado
+
     visit_type = models.CharField(max_length=20, choices=VISIT_TYPE_CHOICES, default='delivery')
     client_number = models.PositiveIntegerField()  # Almacena el número del cliente directamente
     fiscal_year = models.CharField(max_length=4)
@@ -154,15 +161,40 @@ class Delivery(models.Model):
     issue_photos = models.ManyToManyField('IssuePhoto', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)  # Fecha y hora de creación
     updated_at = models.DateTimeField(auto_now=True)      # Fecha y hora de la última actualización
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Relaciona el Delivery con el usuario
-    visit_type = models.CharField(max_length=20, choices=VISIT_TYPE_CHOICES, default='delivery')
-    
+
+       
     
     def __str__(self):
-        return f"Albarán {self.fiscal_year}/{self.delivery_number} - Cliente {self.client_number}"
+        return f"Albarán {self.fiscal_year}/{self.delivery_number} - Cliente {self.customer.client_number if self.customer else 'Sin cliente'}"
 
 class DeliveryImage(models.Model):
     image = models.ImageField(upload_to=get_delivery_image_upload_to)
 
 class IssuePhoto(models.Model):
     image = models.ImageField(upload_to=get_issue_photo_upload_to)
+    
+
+class Customer(models.Model):
+    client_number = models.PositiveIntegerField(unique=True)  # Número de cliente
+    name = models.CharField(max_length=255)  # Nombre del cliente
+    email = models.EmailField()  # Correo electrónico del cliente
+
+    def __str__(self):
+        return f"{self.name} - {self.client_number}"
+    
+class EmailNotificationFailure(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)  # Cliente relacionado con el fallo
+    reason = models.TextField()  # Descripción del error o razón del fallo
+    timestamp = models.DateTimeField(auto_now_add=True)  # Fecha y hora del fallo
+
+    def __str__(self):
+        return f"Fallo de Email - Cliente: {self.customer} - Fecha: {self.timestamp}"
+
+class Product(models.Model):
+    product_number = models.PositiveIntegerField(unique=True)  # Número de producto
+    description = models.CharField(max_length=255)  # Descripción del producto
+    supplier_number = models.PositiveIntegerField()  # Número de proveedor
+    supplier_name = models.CharField(max_length=255)  # Nombre del proveedor
+
+    def __str__(self):
+        return f"{self.product_number} - {self.description}"
