@@ -128,16 +128,72 @@ class DeliveryCreateView(APIView):
                             bahiaazul@mubak.com</p>
                         """
                     )
-                    
                     print(f"Correo enviado a {delivery.customer.email}")
                     
                 except Exception as e:
-                    # Registrar el fallo del correo en la base de datos
+                                    # Registrar el fallo del correo en la base de datos
                     EmailNotificationFailure.objects.create(
                         customer=delivery.customer,
                         reason=str(e)
                     )
                     print(f"Error enviando el correo: {e}")
+                    
+            if delivery.is_resolved:  
+                try:
+                    # Enviar email informando de que la incidencia ha sido solucionada
+                    send_mail(
+                        subject=f"Incidencia resuelta - Albarán N.º {delivery.fiscal_year}/{delivery.delivery_number}",
+                        message=f"""
+                        Estimado/a {delivery.customer.name},
+
+                        Le informamos que su incidencia ha sido solucionada con éxito.
+
+                        Nuestro equipo ha solucionado el problema y agradecemos su paciencia durante el proceso.
+
+                        Si tiene alguna duda o consulta adicional, no dude en ponerse en contacto con nosotros.
+
+                        Atentamente,
+                        WOW Málaga
+                        Departamento de Atención al Cliente
+                        952 91 61 18
+                        bahiaazul@mubak.com
+                        """,
+                        html_message=f"""
+                        <p>Estimado/a {delivery.customer.name},</p>
+                        <p>Le informamos que su incidencia ha sido solucionada con éxito.</p>
+                        <p>Nuestro equipo ha solucionado el problema y agradecemos su paciencia durante el proceso.</p>
+                        <p>Si tiene alguna duda o consulta adicional, no dude en ponerse en contacto con nosotros.</p>
+                        <p>Atentamente,</p>
+                        <p>WOW Málaga<br>
+                        Departamento de Atención al Cliente<br>
+                        952 91 61 18<br>
+                        bahiaazul@mubak.com</p>
+
+                        <hr>
+
+                        <p>Dear {delivery.customer.name},</p>
+                        <p>We are pleased to inform you that your issue has been successfully resolved.</p>
+                        <p>Our team has resolved the issue, and we appreciate your patience during the process.</p>
+                        <p>If you have any questions or additional concerns, please feel free to contact us.</p>
+                        <p>Sincerely,</p>
+                        <p>WOW Málaga<br>
+                        Customer Service Department<br>
+                        952 91 61 18<br>
+                        bahiaazul@mubak.com</p>
+                        """,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[delivery.customer.email],
+                        fail_silently=False,
+                    )
+                    print(f"Correo enviado a {delivery.customer.email} sobre la resolución de la incidencia.")
+                except Exception as e:   
+                   
+                    EmailNotificationFailure.objects.create(
+                        customer=delivery.customer,
+                        reason=str(e)
+                    )
+                    print(f"Error enviando el correo: {e}")
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         # En caso de errores en la validación, devolver los errores
