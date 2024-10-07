@@ -16,11 +16,46 @@ from rest_framework.permissions import IsAuthenticated
 from django.core.mail import send_mail
 from .models import EmailNotificationFailure
 from django.conf import settings
+from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
+import json
 
 # from .models import Delivery
 
 import os
+
+@login_required
+def admin_page_view(request):
+    # Lógica para la página del administrador
+    return render(request, 'admin_page.html')
+
+
+def login_view(request):
+    if request.method == 'POST':
+
+        try:
+            data = json.loads(request.body)
+            username = data.get('username')
+            password = data.get('password')
+
+
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return JsonResponse({'message': 'Login exitoso'})
+            else:
+                return JsonResponse({'message': 'Credenciales incorrectas'}, status=401)
+        except json.JSONDecodeError:
+            return JsonResponse({'message': 'Error al decodificar JSON'}, status=400)
+    return JsonResponse({'message': 'Método no permitido'}, status=405)
+
+def logout_view(request):
+    logout(request)
+    return JsonResponse({'message': 'Logout exitoso'})
     
 class DeliveryCreateView(APIView):
     permission_classes = [IsAuthenticated]  # Requiere autenticación
@@ -55,12 +90,17 @@ class DeliveryCreateView(APIView):
                         product = Product.objects.filter(product_number=issue).first()
                         if product:
                             product_details.append(f"<li>E-{product.product_number} {product.description}</li>")
+                            
+                    # Inicializar productos_afectados como una cadena vacía antes del bloque condicional.
+                    productos_afectados = ""
 
                     # Generar el cuerpo del correo con los productos afectados como una lista HTML
                     if product_details:  # Asegurar que hay productos para incluir en el correo
                         productos_afectados = "".join(product_details)  # Formatear como lista HTML
-                    
+                       
+                       
                     # Comprobar si el cliente tiene un email
+                    
                     if not delivery.customer or not delivery.customer.email:
                         raise ValueError("Correo no proporcionado")
 

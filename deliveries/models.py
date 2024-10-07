@@ -103,6 +103,7 @@ import os
 from django.db import models
 from django.core.files.storage import default_storage
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 def get_incremental_filename(folder_path, base_filename, file_ext):
     """Genera un nombre de archivo único en base a un nombre base y una carpeta."""
@@ -162,6 +163,16 @@ class Delivery(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)  # Fecha y hora de creación
     updated_at = models.DateTimeField(auto_now=True)      # Fecha y hora de la última actualización
 
+    def get_created_at_local(self):
+            """
+            Devuelve la fecha y hora de `created_at` convertida a la zona horaria local.
+            """
+            return timezone.localtime(self.created_at)
+    def get_updated_at_local(self):
+            """
+            Devuelve la fecha y hora de `created_at` convertida a la zona horaria local.
+            """
+            return timezone.localtime(self.update_at)
        
     
     def __str__(self):

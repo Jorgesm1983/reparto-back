@@ -52,7 +52,8 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -105,11 +106,11 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT'), 
+        'NAME': 'entrega_db',
+        'USER': 'root',
+        'PASSWORD': 'Password1576',
+        'HOST': '192.168.1.40',
+        'PORT': '3306', 
     }
 }
 
@@ -189,7 +190,7 @@ CORS_ALLOW_HEADERS = [
     # Puedes añadir otros encabezados personalizados aquí si es necesario
 ]
 
-CORS_ALLOW_CREDENTIALS = False  # Si estás enviando cookies o autenticación
+CORS_ALLOW_CREDENTIALS = True  # Si estás enviando cookies o autenticación
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -204,3 +205,20 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'info.wowmalaga@gmail.com'
 EMAIL_HOST_PASSWORD = 'ezqg bexe trno pwsu'
 DEFAULT_FROM_EMAIL = 'info.wowmalaga@mubak.com'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Guarda las sesiones en la base de datos
+SESSION_COOKIE_AGE = 1209600  # 2 semanas (configurable)
+SESSION_COOKIE_HTTPONLY = True  # Evita el acceso a las cookies de sesión a través de JavaScript
+SESSION_COOKIE_SECURE = False  # Cambia a True si usas HTTPS en producción
+
+LOGIN_URL = '/api/login/'
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://192.168.1.40:3000',
+    'http://localhost:3000',
+]
+
+ALLOWED_HOSTS = ['192.168.1.40', 'localhost']
+
+TIME_ZONE = 'Europe/Madrid'  # Ajusta a tu zona horaria
+USE_TZ = False  # Habilita el uso de zonas horarias
