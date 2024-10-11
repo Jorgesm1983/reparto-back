@@ -95,25 +95,17 @@ class Delivery(models.Model):
     incident_number = models.CharField(max_length=50, blank=True, null=True)  # Nuevo campo
 
     def save(self, *args, **kwargs):
-        # Determinar el estado del albarán basado en su tipo y otras condiciones antes de guardar
-        if self.visit_type == 'delivery':
-            if self.has_issue:
-                # Si es una entrega con incidencia, se marca como pendiente de tratar
-                self.status = 'pendiente_tratar'
-            else:
-                # Si es una entrega sin incidencia, se marca como finalizado
-                self.status = 'finalizado'
-        elif self.visit_type in ['verification', 'resolution']:
-            # Si es una verificación o resolución y está marcada como resuelta, se finaliza
-            if self.is_resolved:
-                self.status = 'finalizado'
-            else:
-                # Si no está resuelta, la dejamos en pendiente de tratar
-                self.status = 'pendiente_tratar'
-        else:
-            # Para cualquier otro caso, dejamos el status actual o lo marcamos como pendiente de tratar
-            self.status = self.status or 'pendiente_tratar'
-
+        if self.status != 'tratado_pendiente_resolucion':  # Solo ajustar si no está en el estado deseado
+            if self.visit_type == 'delivery':
+                if self.has_issue:
+                    self.status = 'pendiente_tratar'
+                else:
+                    self.status = 'finalizado'
+            elif self.visit_type in ['verification', 'resolution']:
+                if self.is_resolved:
+                    self.status = 'finalizado'
+                else:
+                    self.status = 'pendiente_tratar'
         super().save(*args, **kwargs)
 
     def __str__(self):

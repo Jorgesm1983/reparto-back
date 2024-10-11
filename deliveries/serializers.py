@@ -48,7 +48,7 @@ class DeliverySerializer(serializers.ModelSerializer):
     customer_name = serializers.SerializerMethodField()  # Para obtener el nombre del cliente
     visit_type = serializers.ChoiceField(choices=Delivery.VISIT_TYPE_CHOICES, required=True)
     is_resolved = serializers.BooleanField(required=False)
-    status = serializers.CharField()
+    status = serializers.ChoiceField(choices=Delivery.STATUS_CHOICES, required=True)
     
 
     class Meta:
