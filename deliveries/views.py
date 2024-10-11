@@ -245,8 +245,9 @@ def recent_deliveries(request):
     """
     today = timezone.now()
     seven_days_ago = today - timedelta(days=7)
-    deliveries = Delivery.objects.filter(created_at__gte=seven_days_ago)
+    deliveries = Delivery.objects.filter(created_at__gte=seven_days_ago).order_by('-created_at')
 
+    
     # Aplicar filtros desde los parámetros de la URL si es necesario
     if 'visit_type' in request.GET:
         deliveries = deliveries.filter(visit_type=request.GET['visit_type'])
