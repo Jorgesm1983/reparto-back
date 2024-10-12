@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Delivery, DeliveryImage, IssuePhoto, Customer
+from .models import Delivery, DeliveryImage, IssuePhoto, Customer, Product
 from django.utils import timezone
 import json
 
@@ -14,6 +14,10 @@ class DeliveryImageSerializer(serializers.ModelSerializer):
             return request.build_absolute_uri(obj.image.url)
         return None
 
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ['product_number', 'description', 'supplier_number', 'supplier_name']
 
 
 
@@ -27,6 +31,7 @@ class IssuePhotoSerializer(serializers.ModelSerializer):
         if request and obj.image:
             return request.build_absolute_uri(obj.image.url)
         return None
+
 
 class DeliverySerializer(serializers.ModelSerializer):
     
@@ -49,11 +54,14 @@ class DeliverySerializer(serializers.ModelSerializer):
     visit_type = serializers.ChoiceField(choices=Delivery.VISIT_TYPE_CHOICES, required=True)
     is_resolved = serializers.BooleanField(required=False)
     status = serializers.ChoiceField(choices=Delivery.STATUS_CHOICES, required=True)
-    
+    product_descriptions = serializers.SerializerMethodField()
+    visit_type_display = serializers.CharField(source='get_visit_type_display', read_only=True)
+    status_display = serializers.CharField(source='get_status_display', read_only=True)
+    username = serializers.CharField(source='user.first_name', read_only=True)  # Nuevo campo para incluir el nombre del usuario
 
     class Meta:
         model = Delivery
-        fields = ['id','client_number','client_number_display','uploaded_delivery_images','uploaded_issue_photos','customer_name', 'fiscal_year', 'delivery_number', 'client_conformity', 'has_issue', 'observations', 'delivery_images', 'issue_photos', 'issues', 'visit_type', 'is_resolved', 'status','created_at']
+        fields = ['id','username','visit_type_display','status_display','product_descriptions','incident_number','client_number','client_number_display','uploaded_delivery_images','uploaded_issue_photos','customer_name', 'fiscal_year', 'delivery_number', 'client_conformity', 'has_issue', 'observations', 'delivery_images', 'issue_photos', 'issues', 'visit_type', 'is_resolved', 'status','created_at']
 
         extra_kwargs = {
             'client_number': {'write_only': True},
@@ -78,6 +86,20 @@ class DeliverySerializer(serializers.ModelSerializer):
         if any(not isinstance(issue, int) for issue in value):
             raise serializers.ValidationError("Cada valor en issues debe ser un número entero.")
         return value
+    
+    def get_product_descriptions(self, obj):
+        """
+        Obtener las descripciones de los productos relacionados con los números de producto en 'issues'.
+        """
+        descriptions = []
+        for issue in obj.issues:
+            try:
+                # Buscar el producto por su número
+                product = Product.objects.get(product_number=issue)
+                descriptions.append(f"E-{product.product_number} {product.description}")
+            except Product.DoesNotExist:
+                descriptions.append(f"Producto E-{issue} no encontrado")
+        return descriptions
 
     def create(self, validated_data):
     # Extraer los datos necesarios
@@ -117,5 +139,7 @@ class DeliverySerializer(serializers.ModelSerializer):
                 print(f"Guardando foto de incidencia: {photo}")
                 IssuePhoto.objects.create(delivery=delivery, image=photo)
         
+        
 
         return delivery
+    

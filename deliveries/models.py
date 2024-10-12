@@ -94,6 +94,7 @@ class Delivery(models.Model):
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='pendiente de tratar')
     incident_number = models.CharField(max_length=50, blank=True, null=True)  # Nuevo campo
 
+
     def save(self, *args, **kwargs):
         if self.status != 'tratado_pendiente_resolucion':  # Solo ajustar si no está en el estado deseado
             if self.visit_type == 'delivery':

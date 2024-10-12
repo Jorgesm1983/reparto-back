@@ -79,13 +79,22 @@ class DeliveryCreateView(APIView):
         data['has_issue'] = has_issue
 
         # Determinar el estado según si tiene problemas
-        data['status'] = 'pendiente de tratar' if has_issue else 'finalizado'
+        data['status'] = 'pendiente_tratar' if has_issue else 'finalizado'
         
         issues = request.data.getlist('issues', [])
-
+        print(f"Issues desde el request: {issues}")  # Log para verificar las incidencias
+        
         serializer = DeliverySerializer(data=data)
+        
+         # Añadir depuración para ver exactamente qué errores está devolviendo el serializer
+        if not serializer.is_valid():
+            print(f"Errores del serializer: {serializer.errors}")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
         if serializer.is_valid():
             delivery = serializer.save(user=request.user, customer=customer)
+            
+            print(f"Delivery guardado: ID={delivery.id}, Estado={delivery.status}, Conformidad Cliente={delivery.client_conformity}")
             
             serializer = DeliverySerializer(delivery, context={'request': request})
 
@@ -95,6 +104,7 @@ class DeliveryCreateView(APIView):
                     issues = delivery.issues or []
                     print(f"Issues extraídos desde la base de datos: {issues}")
                     self._send_issue_email(delivery, issues)
+                    
                 except Exception as e:
                     # Registrar error de envío de email
                     EmailNotificationFailure.objects.create(
@@ -304,27 +314,27 @@ class CustomerDetailView(APIView):
         except Customer.DoesNotExist:
             return Response({'error': 'Cliente no encontrado'}, status=status.HTTP_404_NOT_FOUND)
         
-@api_view(['GET'])
+# @api_view(['GET'])
 
-def recent_deliveries(request):
-    """
-    Listar albaranes de los últimos 7 días con filtros y resaltar aquellos con incidencias o no resueltos.
-    """
-    today = timezone.now()
-    seven_days_ago = today - timedelta(days=7)
-    deliveries = Delivery.objects.filter(created_at__gte=seven_days_ago).order_by('-created_at')
+# def recent_deliveries(request):
+#     """
+#     Listar albaranes de los últimos 7 días con filtros y resaltar aquellos con incidencias o no resueltos.
+#     """
+#     today = timezone.now()
+#     seven_days_ago = today - timedelta(days=7)
+#     deliveries = Delivery.objects.filter(created_at__gte=seven_days_ago).order_by('-created_at')
 
     
-    # Aplicar filtros desde los parámetros de la URL si es necesario
-    if 'visit_type' in request.GET:
-        deliveries = deliveries.filter(visit_type=request.GET['visit_type'])
-    if 'status' in request.GET:
-        deliveries = deliveries.filter(status=request.GET['status'])
-    if 'has_issue' in request.GET:
-        deliveries = deliveries.filter(has_issue=request.GET['has_issue'])
+#     # Aplicar filtros desde los parámetros de la URL si es necesario
+#     if 'visit_type' in request.GET:
+#         deliveries = deliveries.filter(visit_type=request.GET['visit_type'])
+#     if 'status' in request.GET:
+#         deliveries = deliveries.filter(status=request.GET['status'])
+#     if 'has_issue' in request.GET:
+#         deliveries = deliveries.filter(has_issue=request.GET['has_issue'])
 
-    serializer = DeliverySerializer(deliveries, many=True)
-    return Response(serializer.data)
+#     serializer = DeliverySerializer(deliveries, many=True)
+#     return Response(serializer.data)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -366,7 +376,12 @@ def update_incident(request, delivery_id):
                         f'Se ha registrado una incidencia con el número {incident_number} para su albarán '
                         f'{delivery.fiscal_year}/{delivery.delivery_number}. Nuestro equipo está trabajando para '
                         f'resolverla a la mayor brevedad posible.\n\n'
-                        f'Agradecemos su paciencia.\n\nAtentamente,\n[Nombre de la Empresa]'
+                        f'Agradecemos su paciencia.\n\n'
+                        f'Atentamente,\n'
+                        f'WOW Málaga\n'
+                        f'Departamento de Atención al Cliente\n'
+                        f'952 91 61 18\n'
+                        f'bahiaazul@mubak.com'
                     ),
                     from_email=settings.DEFAULT_FROM_EMAIL,
                     recipient_list=[delivery.customer.email],
@@ -405,7 +420,7 @@ def recent_deliveries(request):
     Listar albaranes de los últimos 7 días con filtros y resaltar aquellos con incidencias o no resueltos.
     """
     today = timezone.now()
-    seven_days_ago = today - timedelta(days=1)
+    seven_days_ago = today - timedelta(days=2)
     deliveries = Delivery.objects.filter(created_at__gte=seven_days_ago)
 
     # Aplicar filtros desde los parámetros de la URL si es necesario
