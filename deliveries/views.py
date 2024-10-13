@@ -23,6 +23,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from datetime import timedelta
+from django.db import transaction
 
 import json
 
@@ -67,19 +68,36 @@ class DeliveryCreateView(APIView):
     permission_classes = [IsAuthenticated]
     queryset = Delivery.objects.all()
     serializer_class = DeliverySerializer
-
+    
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
         client_number = request.data.get('client_number')
         customer = Customer.objects.filter(client_number=client_number).first()
         
         data = request.data.copy()
         data['customer'] = customer.id if customer else None
-
+        
+        visit_type = data.get('visit_type')
+        
         has_issue = data.get('has_issue', 'false').lower() == 'true'
         data['has_issue'] = has_issue
-
+        
+        is_resolved = data.get('is_resolved', 'false').lower() == 'true'
+        data['is_resolved'] = is_resolved
+        
         # Determinar el estado según si tiene problemas
-        data['status'] = 'pendiente_tratar' if has_issue else 'finalizado'
+        if visit_type == 'resolution' or visit_type == 'verification':
+        # Albaranes de verificación o resolución solo tienen dos estados: finalizado o no resuelto
+            if is_resolved:
+                data['status'] = 'finalizado'
+            else:
+                data['status'] = 'no_resuelto'  # Podría ser otro nombre como 'pendiente_resolucion'
+        else:
+            # Albaranes de entrega tienen lógica más compleja basada en incidencias
+            if has_issue:
+                data['status'] = 'pendiente_tratar'
+            else:
+                data['status'] = 'finalizado'
         
         issues = request.data.getlist('issues', [])
         print(f"Issues desde el request: {issues}")  # Log para verificar las incidencias
@@ -112,6 +130,35 @@ class DeliveryCreateView(APIView):
                         reason=str(e)
                     )
                     print(f"Error enviando el correo: {e}")
+                    
+            if visit_type in ['verification', 'resolution'] and delivery.is_resolved:
+                try:
+                    # Actualizar los albaranes de entrega anteriores a finalizado
+                    Delivery.objects.filter(
+                        customer=delivery.customer,
+                        visit_type='delivery',
+                        status='tratado_pendiente_resolucion'
+                    ).update(status='finalizado')
+                    print(f"Albaranes de entrega anteriores actualizados a 'finalizado' para el cliente {delivery.customer.client_number}")
+                
+                    # Actualizar los albaranes de verificación anteriores a finalizado
+                    Delivery.objects.filter(
+                        customer=delivery.customer,
+                        visit_type='verification',
+                        status='no_resuelto'  # Cambiar de no resuelto a finalizado si la resolución se da
+                    ).update(status='finalizado')
+                    print(f"Albaranes de verificación anteriores actualizados a 'finalizado' para el cliente {delivery.customer.client_number}")
+                
+                    # Actualizar los albaranes de resolución anteriores a finalizado
+                    Delivery.objects.filter(
+                        customer=delivery.customer,
+                        visit_type='resolution',
+                        status='no_resuelto'  # Cambiar de no resuelto a finalizado si la resolución se da
+                    ).update(status='finalizado')
+                    print(f"Albaranes de resolución no resueltos actualizados a 'finalizado' para el cliente {delivery.customer.client_number}")
+                    
+                except Exception as e:
+                    print(f"Error al actualizar los albaranes anteriores: {e}")
                     
                     # Enviar email si la incidencia está resuelta
             if delivery.is_resolved:

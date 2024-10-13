@@ -70,6 +70,8 @@ class Delivery(models.Model):
         ('pendiente_tratar', 'Pendiente de Tratar'),
         ('tratado_pendiente_resolucion', 'Tratado Pendiente de Resolución'),
         ('finalizado', 'Finalizado'),
+        ('no_resuelto', 'No Resuelto'),
+        
     ]
     
     # Relación con el cliente
@@ -106,11 +108,11 @@ class Delivery(models.Model):
                 if self.is_resolved:
                     self.status = 'finalizado'
                 else:
-                    self.status = 'pendiente_tratar'
+                    self.status = 'no_resuelto'
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Delivery {self.delivery_number} - Cliente {self.client_number}"
+        return f"Albarán {self.fiscal_year}/{self.delivery_number} - Cliente {self.customer.client_number if self.customer else 'Sin cliente'}"
 
     def get_created_at_local(self):
             """
