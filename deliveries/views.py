@@ -361,27 +361,6 @@ class CustomerDetailView(APIView):
         except Customer.DoesNotExist:
             return Response({'error': 'Cliente no encontrado'}, status=status.HTTP_404_NOT_FOUND)
         
-# @api_view(['GET'])
-
-# def recent_deliveries(request):
-#     """
-#     Listar albaranes de los últimos 7 días con filtros y resaltar aquellos con incidencias o no resueltos.
-#     """
-#     today = timezone.now()
-#     seven_days_ago = today - timedelta(days=7)
-#     deliveries = Delivery.objects.filter(created_at__gte=seven_days_ago).order_by('-created_at')
-
-    
-#     # Aplicar filtros desde los parámetros de la URL si es necesario
-#     if 'visit_type' in request.GET:
-#         deliveries = deliveries.filter(visit_type=request.GET['visit_type'])
-#     if 'status' in request.GET:
-#         deliveries = deliveries.filter(status=request.GET['status'])
-#     if 'has_issue' in request.GET:
-#         deliveries = deliveries.filter(has_issue=request.GET['has_issue'])
-
-#     serializer = DeliverySerializer(deliveries, many=True)
-#     return Response(serializer.data)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -466,17 +445,46 @@ def recent_deliveries(request):
     """
     Listar albaranes de los últimos 7 días con filtros y resaltar aquellos con incidencias o no resueltos.
     """
+    # Obtener fechas de los parámetros GET, si están presentes
+    date_from = request.GET.get('dateFrom')
+    date_to = request.GET.get('dateTo')
+
+    # Obtener la fecha actual
     today = timezone.now()
-    seven_days_ago = today - timedelta(days=2)
-    deliveries = Delivery.objects.filter(created_at__gte=seven_days_ago)
+    
+    # Si no se pasa ningún filtro de fecha, se muestran los últimos 7 días
+    if not date_from and not date_to:
+        seven_days_ago = today - timedelta(days=7)
+        deliveries = Delivery.objects.filter(created_at__gte=seven_days_ago)
+    else:
+        # Aplicar los filtros de rango de fechas si existen
+        if date_from:
+            deliveries = Delivery.objects.filter(created_at__gte=date_from)
+        if date_to:
+            deliveries = deliveries.filter(created_at__lte=date_to)    
 
-    # Aplicar filtros desde los parámetros de la URL si es necesario
-    if 'visit_type' in request.GET:
-        deliveries = deliveries.filter(visit_type=request.GET['visit_type'])
-    if 'status' in request.GET:
-        deliveries = deliveries.filter(status=request.GET['status'])
-    if 'has_issue' in request.GET:
-        deliveries = deliveries.filter(has_issue=request.GET['has_issue'])
+    # Filtros adicionales desde el front-end
+    date_from = request.GET.get('dateFrom', None)
+    date_to = request.GET.get('dateTo', None)
+    visit_type = request.GET.get('visit_type', None)
+    status = request.GET.get('status', None)
+    has_issue = request.GET.get('has_issue', None)
 
+    # Filtrar por rango de fechas si se proporcionan
+    if date_from:
+        deliveries = deliveries.filter(created_at__gte=date_from)
+    if date_to:
+        deliveries = deliveries.filter(created_at__lte=date_to)
+
+    # Aplicar otros filtros si están presentes
+    if visit_type:
+        deliveries = deliveries.filter(visit_type=visit_type)
+    if status:
+        deliveries = deliveries.filter(status=status)
+    if has_issue:
+        deliveries = deliveries.filter(has_issue=has_issue)
+
+    # Serializar los datos de las entregas filtradas
     serializer = DeliverySerializer(deliveries, many=True, context={'request': request})
+    
     return Response(serializer.data)
