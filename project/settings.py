@@ -207,7 +207,7 @@ EMAIL_HOST_PASSWORD = 'ezqg bexe trno pwsu'
 DEFAULT_FROM_EMAIL = 'info.wowmalaga@mubak.com'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Guarda las sesiones en la base de datos
-SESSION_COOKIE_AGE = 1209600  # 2 semanas (configurable)
+SESSION_COOKIE_AGE = 60 * 60 * 6  # 12 horas
 SESSION_COOKIE_HTTPONLY = True  # Evita el acceso a las cookies de sesión a través de JavaScript
 SESSION_COOKIE_SECURE = False  # Cambia a True si usas HTTPS en producción
 
@@ -220,5 +220,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 ALLOWED_HOSTS = ['192.168.1.40', 'localhost']
 
+
 TIME_ZONE = 'Europe/Madrid'  # Ajusta a tu zona horaria
 USE_TZ = False  # Habilita el uso de zonas horarias
+FILE_UPLOAD_MAX_MEMORY_SIZE = 15242880  # 5 MB, ajusta según sea necesario

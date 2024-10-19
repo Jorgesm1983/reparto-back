@@ -22,8 +22,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
-from datetime import timedelta
+from datetime import timedelta, datetime
 from django.db import transaction
+from django.http import QueryDict
+from django.utils.decorators import method_decorator
 
 import json
 
@@ -35,6 +37,13 @@ import os
 def admin_page_view(request):
     # Lógica para la página del administrador
     return render(request, 'admin_page.html')
+
+@csrf_exempt
+def check_session(request):
+    if request.user.is_authenticated:
+        return JsonResponse({'status': 'authenticated'}, status=200)
+    else:
+        return JsonResponse({'status': 'unauthenticated'}, status=401)
 
 @csrf_exempt
 def login_view(request):
@@ -49,7 +58,10 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 
+                 # Establecer la expiración de la sesión a 12 horas (43200 segundos)
+                request.session.set_expiry(60 * 60 * 6)  # 12 horas
                 # Obtener o crear el token para el usuario
+                
                 token, _ = Token.objects.get_or_create(user=user)
                 
                 # Devolver el token en la respuesta
@@ -74,7 +86,11 @@ class DeliveryCreateView(APIView):
         client_number = request.data.get('client_number')
         customer = Customer.objects.filter(client_number=client_number).first()
         
-        data = request.data.copy()
+        if request.FILES:  # Comprobar si hay archivos en la solicitud
+            data = request.data.copy()
+            files = request.FILES
+        else:
+            data = request.data.copy()
         data['customer'] = customer.id if customer else None
         
         visit_type = data.get('visit_type')
@@ -233,8 +249,8 @@ class DeliveryCreateView(APIView):
                     <p>Atentamente,</p>
                     <p>WOW Málaga<br>
                     Departamento de Atención al Cliente<br>
-                    952 91 61 18<br>
-                    bahiaazul@mubak.com</p>
+                    <a href="tel:+34952916118">+34 952 91 61 18</a><br>
+                    <a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
 
                     <hr>
 
@@ -255,16 +271,21 @@ class DeliveryCreateView(APIView):
                     <p>Sincerely,</p>
                     <p>WOW Málaga<br>
                     Customer Service Department<br>
-                    952 91 61 18<br>
-                    bahiaazul@mubak.com</p>
+                    <a href="tel:+34952916118">+34 952 91 61 18</a><br>
+                    <a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
                 """
             )
             print(f"Correo enviado a {delivery.customer.email}")
         except Exception as e:
-            # Registrar el fallo del correo en la base de datos
+            # Formato del albarán
+            albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
+
+            # Registrar el error con el albarán y el tipo de email
             EmailNotificationFailure.objects.create(
                 customer=delivery.customer,
-                reason=str(e)
+                reason=str(e),
+                albaran=albaran_info,
+                email_type='albaran_incidencia'  # Especificamos el tipo de email
             )
             print(f"Error enviando el correo: {e}")
 
@@ -297,8 +318,8 @@ class DeliveryCreateView(APIView):
                     <p>Atentamente,</p>
                     <p>WOW Málaga<br>
                     Departamento de Atención al Cliente<br>
-                    952 91 61 18<br>
-                    bahiaazul@mubak.com</p>
+                    <a href="tel:+34952916118">+34 952 91 61 18</a><br>
+                    <a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
 
                     <hr>
 
@@ -309,8 +330,8 @@ class DeliveryCreateView(APIView):
                     <p>Sincerely,</p>
                     <p>WOW Málaga<br>
                     Customer Service Department<br>
-                    952 91 61 18<br>
-                    bahiaazul@mubak.com</p>
+                    <a href="tel:+34952916118">+34 952 91 61 18</a><br>
+                    <a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
                     """,
                     from_email=settings.DEFAULT_FROM_EMAIL,
                     recipient_list=[delivery.customer.email],
@@ -318,9 +339,13 @@ class DeliveryCreateView(APIView):
                 )
                 print(f"Correo enviado a {delivery.customer.email} sobre la resolución de la incidencia.")
             except Exception as e:
+                albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
+                
                 EmailNotificationFailure.objects.create(
                     customer=delivery.customer,
-                    reason=str(e)
+                    reason=str(e),
+                    albaran=albaran_info,
+                    email_type='registro_incidencia'  # Especificamos el tipo de email
                 )
                 print(f"Error enviando el correo: {e}")
 
@@ -412,11 +437,30 @@ def update_incident(request, delivery_id):
                     from_email=settings.DEFAULT_FROM_EMAIL,
                     recipient_list=[delivery.customer.email],
                     fail_silently=False,
+                    html_message=f"""
+                        <p>Estimado/a {delivery.customer.name},</p>
+                        <p>Le informamos que su incidencia ha sido solucionada con éxito.</p>
+                        <p>Si tiene alguna duda, no dude en ponerse en contacto con nosotros.</p>
+                        <p>Atentamente,</p>
+                        <p>WOW Málaga<br>
+                        Departamento de Atención al Cliente<br>
+                        <a href="tel:+34952916118">+34 952 91 61 18</a><br>
+                        <a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
+                        """
                 )
                 print(f"Correo enviado a {delivery.customer.email}")
             except Exception as e:
-                print(f"Error al enviar el correo: {str(e)}")
-                return Response({'error': f'Error al enviar el correo: {str(e)}'}, status=500)
+                
+                albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
+
+                # Registrar el error con el albarán y el tipo de email
+                EmailNotificationFailure.objects.create(
+                    customer=delivery.customer,
+                    reason=str(e),
+                    albaran=albaran_info,
+                    email_type='resolucion_incidencia'  # Especificamos el tipo de email
+                )
+                print(f"Error enviando el correo: {e}")
         else:
             print("No se envió correo porque el cliente no tiene un email registrado.")
 
@@ -443,14 +487,27 @@ def calculate_response_time(request, delivery_id):
 @api_view(['GET'])
 def recent_deliveries(request):
     """
-    Listar albaranes de los últimos 7 días con filtros y resaltar aquellos con incidencias o no resueltos.
+    Listar albaranes con filtros opcionales y resaltar aquellos con incidencias o no resueltos.
     """
-    # Obtener fechas de los parámetros GET, si están presentes
-    date_from = request.GET.get('dateFrom')
-    date_to = request.GET.get('dateTo')
-
-    # Obtener la fecha actual
     today = timezone.now()
+    deliveries = Delivery.objects.all()  # Puedes cambiarlo según la lógica de tu negocio
+
+    # Filtrar por rango de fechas si se proporcionan
+    date_from = request.GET.get('dateFrom', None)
+    date_to = request.GET.get('dateTo', None)
+    
+    try:
+        if date_from:
+            # Convertir dateFrom a formato datetime y filtrar
+            date_from = datetime.strptime(date_from, "%Y-%m-%d")
+            deliveries = deliveries.filter(created_at__gte=date_from)
+        if date_to:
+            # Convertir dateTo a formato datetime y filtrar
+            date_to = datetime.strptime(date_to, "%Y-%m-%d")
+            deliveries = deliveries.filter(created_at__lte=date_to)
+    except ValueError as e:
+        # Si hay error en la conversión de fecha, enviar error con 400 Bad Request
+        return Response({'error': f'Formato de fecha inválido: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
     
     # Si no se pasa ningún filtro de fecha, se muestran los últimos 7 días
     if not date_from and not date_to:
@@ -484,7 +541,8 @@ def recent_deliveries(request):
     if has_issue:
         deliveries = deliveries.filter(has_issue=has_issue)
 
-    # Serializar los datos de las entregas filtradas
-    serializer = DeliverySerializer(deliveries, many=True, context={'request': request})
-    
-    return Response(serializer.data)
+    if deliveries.exists():
+        serializer = DeliverySerializer(deliveries, many=True, context={'request': request})
+        return Response(serializer.data)
+    else:
+        return Response([], status=status.HTTP_200_OK)  # Devuelve una lista vacía si no hay registros

@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import login_view, logout_view
+from .views import login_view, logout_view, check_session
 from . import views
 
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
     path('api/customer/<int:client_number>/', views.CustomerDetailView.as_view(), name='customer-detail'),
     path('api/recent_deliveries/', views.recent_deliveries, name='recent_deliveries'),
     path('api/update_incident/<int:delivery_id>/', views.update_incident, name='update_incident'),
+    path('api/check-session/', check_session, name='check-session'),
 ]

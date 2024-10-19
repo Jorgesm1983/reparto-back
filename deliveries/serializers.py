@@ -92,14 +92,26 @@ class DeliverySerializer(serializers.ModelSerializer):
         Obtener las descripciones de los productos relacionados con los números de producto en 'issues'.
         """
         descriptions = []
-        for issue in obj.issues:
-            try:
-                # Buscar el producto por su número
-                product = Product.objects.get(product_number=issue)
-                descriptions.append(f"E-{product.product_number} {product.description}")
-            except Product.DoesNotExist:
-                descriptions.append(f"Producto E-{issue} no encontrado")
+    
+        try:
+            # Verificar si 'issues' es una lista, si no lo es, se considera como una lista vacía
+            issues = obj.issues if isinstance(obj.issues, list) else []
+        
+            for issue in issues:
+                try:
+                    # Buscar el producto por su número
+                    product = Product.objects.get(product_number=issue)
+                    descriptions.append(f"E-{product.product_number} {product.description}")
+                except Product.DoesNotExist:
+                    descriptions.append(f"Producto E-{issue} no encontrado")
+        
+        except Exception as e:
+            # Loguear el error para entender qué está fallando
+            logger.error(f"Error en get_product_descriptions para {obj.id}: {str(e)}")
+            descriptions.append("Error al obtener la descripción del producto")
+
         return descriptions
+        
 
     def create(self, validated_data):
     # Extraer los datos necesarios
@@ -129,9 +141,6 @@ class DeliverySerializer(serializers.ModelSerializer):
         # Guardar imágenes de entrega
         for image in uploaded_delivery_images:
             DeliveryImage.objects.create(delivery=delivery, image=image)
-            
-        for photo in uploaded_issue_photos:
-            IssuePhoto.objects.create(delivery=delivery, image=photo)
 
         # Guardar fotos de incidencias o resoluciones no finalizadas
         if delivery.visit_type in ['verification', 'resolution'] or delivery.has_issue:

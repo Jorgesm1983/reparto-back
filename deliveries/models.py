@@ -140,12 +140,21 @@ class Customer(models.Model):
         return f"{self.name} - {self.client_number}"
     
 class EmailNotificationFailure(models.Model):
+    
+    EMAIL_TYPE_CHOICES = [
+        ('albaran_incidencia', 'Albarán con Incidencia'),
+        ('registro_incidencia', 'Registro de Incidencia'),
+        ('resolucion_incidencia', 'Resolución de Incidencia'),
+    ]
+
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)  # Cliente relacionado con el fallo
     reason = models.TextField()  # Descripción del error o razón del fallo
     timestamp = models.DateTimeField(auto_now_add=True)  # Fecha y hora del fallo
+    albaran = models.CharField(max_length=20, blank=True, null=True)  # Almacena el albarán con el formato "año_fiscal/nºdealbaran"
+    email_type = models.CharField(max_length=50, choices=EMAIL_TYPE_CHOICES, blank=True, null=True)  # Tipo de email que falló
 
     def __str__(self):
-        return f"Fallo de Email - Cliente: {self.customer} - Fecha: {self.timestamp}"
+        return f"Fallo de Email - Cliente: {self.customer} - Albarán: {self.albaran} - Tipo: {self.email_type} - Fecha: {self.timestamp}"
 
 class Product(models.Model):
     product_number = models.PositiveIntegerField(unique=True)  # Número de producto
