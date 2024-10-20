@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import login_view, logout_view, check_session
+from .views import login_view, logout_view, check_session, albaranes_pendientes, albaranes_tratados, albaranes_no_resueltos
 from . import views
 
 urlpatterns = [
@@ -11,4 +11,7 @@ urlpatterns = [
     path('api/recent_deliveries/', views.recent_deliveries, name='recent_deliveries'),
     path('api/update_incident/<int:delivery_id>/', views.update_incident, name='update_incident'),
     path('api/check-session/', check_session, name='check-session'),
+    path('api/albaranes-pendientes/', albaranes_pendientes, name='albaranes-pendientes'),
+    path('api/albaranes-tratados/', albaranes_tratados, name='albaranes-tratados'),
+    path('api/albaranes-no-resueltos/', albaranes_no_resueltos, name='albaranes-no-resueltos'),
 ]

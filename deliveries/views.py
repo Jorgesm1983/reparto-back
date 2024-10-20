@@ -496,47 +496,39 @@ def recent_deliveries(request):
     date_from = request.GET.get('dateFrom', None)
     date_to = request.GET.get('dateTo', None)
     
+    print(f"dateFrom: {date_from}, dateTo: {date_to}")  # Verificar los valores de las fechas
+    
     try:
         if date_from:
-            # Convertir dateFrom a formato datetime y filtrar
             date_from = datetime.strptime(date_from, "%Y-%m-%d")
             deliveries = deliveries.filter(created_at__gte=date_from)
+            
         if date_to:
-            # Convertir dateTo a formato datetime y filtrar
-            date_to = datetime.strptime(date_to, "%Y-%m-%d")
+            date_to = datetime.strptime(date_to, "%Y-%m-%d") + timedelta(days=1) - timedelta(microseconds=1)
             deliveries = deliveries.filter(created_at__lte=date_to)
+            
     except ValueError as e:
         # Si hay error en la conversión de fecha, enviar error con 400 Bad Request
         return Response({'error': f'Formato de fecha inválido: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
     
     # Si no se pasa ningún filtro de fecha, se muestran los últimos 7 días
     if not date_from and not date_to:
+       
         seven_days_ago = today - timedelta(days=7)
         deliveries = Delivery.objects.filter(created_at__gte=seven_days_ago)
-    else:
-        # Aplicar los filtros de rango de fechas si existen
-        if date_from:
-            deliveries = Delivery.objects.filter(created_at__gte=date_from)
-        if date_to:
-            deliveries = deliveries.filter(created_at__lte=date_to)    
+    
 
     # Filtros adicionales desde el front-end
-    date_from = request.GET.get('dateFrom', None)
-    date_to = request.GET.get('dateTo', None)
+    
     visit_type = request.GET.get('visit_type', None)
-    status = request.GET.get('status', None)
+    delivery_status = request.GET.get('delivery_status', None)
     has_issue = request.GET.get('has_issue', None)
 
-    # Filtrar por rango de fechas si se proporcionan
-    if date_from:
-        deliveries = deliveries.filter(created_at__gte=date_from)
-    if date_to:
-        deliveries = deliveries.filter(created_at__lte=date_to)
 
     # Aplicar otros filtros si están presentes
     if visit_type:
         deliveries = deliveries.filter(visit_type=visit_type)
-    if status:
+    if delivery_status:
         deliveries = deliveries.filter(status=status)
     if has_issue:
         deliveries = deliveries.filter(has_issue=has_issue)
@@ -546,3 +538,18 @@ def recent_deliveries(request):
         return Response(serializer.data)
     else:
         return Response([], status=status.HTTP_200_OK)  # Devuelve una lista vacía si no hay registros
+    
+    # Albaranes pendientes de tratar
+def albaranes_pendientes(request):
+    count = Delivery.objects.filter(status='pendiente_tratar').count()
+    return JsonResponse({'count': count})
+
+# Albaranes tratados pendientes de resolución
+def albaranes_tratados(request):
+    count = Delivery.objects.filter(status='tratado_pendiente_resolucion').count()
+    return JsonResponse({'count': count})
+
+# Albaranes sin resolver
+def albaranes_no_resueltos(request):
+    count = Delivery.objects.filter(status='no_resuelto').count()
+    return JsonResponse({'count': count})
