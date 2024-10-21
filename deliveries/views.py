@@ -13,7 +13,7 @@ from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
-from django.core.mail import send_mail
+from django.core.mail import send_mail, BadHeaderError
 from .models import EmailNotificationFailure
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
@@ -26,6 +26,12 @@ from datetime import timedelta, datetime
 from django.db import transaction
 from django.http import QueryDict
 from django.utils.decorators import method_decorator
+from rest_framework.permissions import AllowAny
+from smtplib import SMTPException
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email# <-- Añade esta línea
+from django.shortcuts import get_object_or_404
+
 
 import json
 
@@ -201,15 +207,15 @@ class DeliveryCreateView(APIView):
                     product_details.append(f"<li>E-{product.product_number} {product.description}</li>")
                 else:
                     print(f"No se encontró un producto con el número: {issue}")
-            # Inicializar productos_afectados como una cadena vacía antes del bloque condicional.
-            productos_afectados = ""
 
-            # Generar el cuerpo del correo con los productos afectados como una lista HTML
             productos_afectados = "".join(product_details) if product_details else "<li>Sin detalles de productos.</li>"
 
             # Comprobar si el cliente tiene un email
             if not delivery.customer or not delivery.customer.email:
-                raise ValueError("Correo no proporcionado")
+                raise ValueError("Cliente sin email registrado")
+
+            # Validar el formato del email
+            validate_email(delivery.customer.email)
 
             # Enviar el correo de notificación
             send_mail(
@@ -276,23 +282,61 @@ class DeliveryCreateView(APIView):
                 """
             )
             print(f"Correo enviado a {delivery.customer.email}")
-        except Exception as e:
-            # Formato del albarán
-            albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
 
-            # Registrar el error con el albarán y el tipo de email
+        except ValidationError:
+            # Email con formato incorrecto
+            albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
+            EmailNotificationFailure.objects.create(
+                customer=delivery.customer,
+                reason="Formato de email incorrecto",
+                albaran=albaran_info,
+                email_type='albaran_incidencia',
+                delivery=delivery  # Asegúrate de asociar la entrega
+            )
+            print(f"Error: Formato de email incorrecto para {delivery.customer.email}")
+
+        except BadHeaderError:
+            # Error en los encabezados del correo
+            albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
+            EmailNotificationFailure.objects.create(
+                customer=delivery.customer,
+                reason="Encabezados de correo inválidos",
+                albaran=albaran_info,
+                email_type='albaran_incidencia',
+                delivery=delivery  # Asegúrate de asociar la entrega
+            )
+            print(f"Error: Encabezados inválidos para {delivery.customer.email}")
+
+        except SMTPException as e:
+            # Error de SMTP (correo no válido, no existe, etc.)
+            albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
             EmailNotificationFailure.objects.create(
                 customer=delivery.customer,
                 reason=str(e),
                 albaran=albaran_info,
-                email_type='albaran_incidencia'  # Especificamos el tipo de email
+                email_type='albaran_incidencia',
+                delivery=delivery  # Asegúrate de asociar la entrega
             )
-            print(f"Error enviando el correo: {e}")
+            print(f"Error SMTP enviando el correo a {delivery.customer.email}: {e}")
 
-# Enviar correo si la incidencia está resuelta
-    def _send_resolution_email(self, delivery):    
+        except Exception as e:
+            # Otro error imprevisto
+            albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
+            EmailNotificationFailure.objects.create(
+                customer=delivery.customer,
+                reason=str(e),
+                albaran=albaran_info,
+                email_type='albaran_incidencia',
+                delivery=delivery  # Asegúrate de asociar la entrega
+            )
+            print(f"Error desconocido enviando el correo a {delivery.customer.email}: {e}")
+
+
+    def _send_resolution_email(self, delivery):
         if delivery.is_resolved:
             try:
+                validate_email(delivery.customer.email)
+                # Enviar correo de resolución
                 send_mail(
                     subject=f"Incidencia resuelta - Albarán N.º {delivery.fiscal_year}/{delivery.delivery_number}",
                     message=f"""
@@ -320,34 +364,80 @@ class DeliveryCreateView(APIView):
                     Departamento de Atención al Cliente<br>
                     <a href="tel:+34952916118">+34 952 91 61 18</a><br>
                     <a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
-
+                    
                     <hr>
 
-                    <p>Dear {delivery.customer.name},</p>
-                    <p>We are pleased to inform you that your issue has been successfully resolved.</p>
-                    <p>Our team has resolved the issue, and we appreciate your patience during the process.</p>
-                    <p>If you have any questions or additional concerns, please feel free to contact us.</p>
+                    <p>Dear {customer.name},</p>
+                    <p>Your issue has been successfully resolved for delivery {delivery.fiscal_year}/{delivery.delivery_number}.</p>
+                    <p>If you have any questions, please feel free to contact us.</p>
                     <p>Sincerely,</p>
-                    <p>WOW Málaga<br>
-                    Customer Service Department<br>
-                    <a href="tel:+34952916118">+34 952 91 61 18</a><br>
-                    <a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
+                    <p>WOW Málaga<br>Customer Service Department<br><a href="tel:+34952916118">+34 952 91 61 18</a><br><a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
                     """,
                     from_email=settings.DEFAULT_FROM_EMAIL,
                     recipient_list=[delivery.customer.email],
                     fail_silently=False,
                 )
                 print(f"Correo enviado a {delivery.customer.email} sobre la resolución de la incidencia.")
-            except Exception as e:
+
+            except ValidationError:
+                # Email con formato incorrecto
                 albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
-                
+                EmailNotificationFailure.objects.create(
+                    customer=delivery.customer,
+                    reason="Formato de email incorrecto",
+                    albaran=albaran_info,
+                    email_type='resolucion_incidencia',
+                    delivery=delivery  # Asegúrate de asociar la entrega
+                )
+                print(f"Error: Formato de email incorrecto para {delivery.customer.email}")
+
+            except BadHeaderError:
+                # Error en los encabezados del correo
+                albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
+                EmailNotificationFailure.objects.create(
+                    customer=delivery.customer,
+                    reason="Encabezados de correo inválidos",
+                    albaran=albaran_info,
+                    email_type='resolucion_incidencia',
+                    delivery=delivery  # Asegúrate de asociar la entrega
+                )
+                print(f"Error: Encabezados inválidos para {delivery.customer.email}")
+
+            except SMTPException as e:
+                # Error de SMTP (correo no válido, no existe, etc.)
+                albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
                 EmailNotificationFailure.objects.create(
                     customer=delivery.customer,
                     reason=str(e),
                     albaran=albaran_info,
-                    email_type='registro_incidencia'  # Especificamos el tipo de email
+                    email_type='resolucion_incidencia',
+                    delivery=delivery  # Asegúrate de asociar la entrega
                 )
-                print(f"Error enviando el correo: {e}")
+                print(f"Error SMTP enviando el correo a {delivery.customer.email}: {e}")
+
+            except Exception as e:
+                # Otro error imprevisto
+                albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
+                EmailNotificationFailure.objects.create(
+                    customer=delivery.customer,
+                    reason=str(e),
+                    albaran=albaran_info,
+                    email_type='resolucion_incidencia',
+                    delivery=delivery  # Asegúrate de asociar la entrega
+                )
+                print(f"Error desconocido enviando el correo a {delivery.customer.email}: {e}")
+                
+        else:
+            # Si no tiene email registrado
+            albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
+            EmailNotificationFailure.objects.create(
+                customer=delivery.customer,
+                reason="Cliente sin email registrado",
+                albaran=albaran_info,
+                email_type='registro_incidencia',
+                delivery=delivery  # Asegúrate de asociar la entrega
+            )
+            print(f"Error: Cliente sin email registrado")
 
 
     @api_view(['POST'])
@@ -402,24 +492,17 @@ def update_incident(request, delivery_id):
             return Response({'error': 'Número de incidencia requerido'}, status=400)
 
         # Actualizar el número de incidencia y el estado
-        
         delivery.incident_number = incident_number
         delivery.status = 'tratado_pendiente_resolucion'  # Usar el valor exacto de STATUS_CHOICES
         delivery.save()
 
-        # Verificar si el cambio se realizó
-        delivery.refresh_from_db()
-        print(f"Después de actualizar: status={delivery.status}, incident_number={delivery.incident_number}")
-
-        # Verificar si el cambio se refleja
-        if delivery.status == 'tratado_pendiente_resolucion':
-            print("El estado se actualizó correctamente.")
-        else:
-            print("El estado NO se actualizó correctamente, verificar el modelo y las restricciones.")
-
-        # Enviar correo electrónico al cliente si tiene un email
+        # Verificar si el cliente tiene un email registrado
         if delivery.customer.email:
             try:
+                # Validar si el formato del email es correcto
+                validate_email(delivery.customer.email)
+
+                # Intentar enviar el correo
                 send_mail(
                     subject=f'Incidencia registrada: {incident_number}',
                     message=(
@@ -439,37 +522,94 @@ def update_incident(request, delivery_id):
                     fail_silently=False,
                     html_message=f"""
                         <p>Estimado/a {delivery.customer.name},</p>
-                        <p>Le informamos que su incidencia ha sido solucionada con éxito.</p>
-                        <p>Si tiene alguna duda, no dude en ponerse en contacto con nosotros.</p>
-                        <p>Atentamente,</p>
-                        <p>WOW Málaga<br>
-                        Departamento de Atención al Cliente<br>
-                        <a href="tel:+34952916118">+34 952 91 61 18</a><br>
-                        <a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
+                            <p>Se ha registrado una incidencia con el número {incident_number} para su albarán {delivery.fiscal_year}/{delivery.delivery_number}. Nuestro equipo está trabajando para resolverla a la mayor brevedad posible.</p>
+                            <p>Agradecemos su paciencia.</p>
+                            <p>Atentamente,</p>
+                            <p>WOW Málaga<br>
+                            Departamento de Atención al Cliente<br>
+                            <a href="tel:+34952916118">952 91 61 18</a><br>
+                            <a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
+
+                            <hr>
+
+                            <p>Dear {delivery.customer.name},</p>
+                            <p>An issue has been registered with incident number {incident_number} for your delivery {delivery.fiscal_year}/{delivery.delivery_number}. Our team is working to resolve it as soon as possible.</p>
+                            <p>Thank you for your patience.</p>
+                            <p>Sincerely,</p>
+                            <p>WOW Málaga<br>
+                            Customer Service Department<br>
+                            <a href="tel:+34952916118">+34 952 91 61 18</a><br>
+                            <a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
+
                         """
                 )
                 print(f"Correo enviado a {delivery.customer.email}")
-            except Exception as e:
-                
-                albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
 
-                # Registrar el error con el albarán y el tipo de email
+            except ValidationError:
+                # Email con formato incorrecto
+                albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
+                EmailNotificationFailure.objects.create(
+                    customer=delivery.customer,
+                    reason="Formato de email incorrecto",
+                    albaran=albaran_info,
+                    email_type='registro_incidencia',
+                    delivery=delivery  # Asegúrate de asociar la entrega
+                )
+                print(f"Error: Formato de email incorrecto para {delivery.customer.email}")
+
+            except BadHeaderError:
+                # Error en los encabezados del correo
+                albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
+                EmailNotificationFailure.objects.create(
+                    customer=delivery.customer,
+                    reason="Encabezados de correo inválidos",
+                    albaran=albaran_info,
+                    email_type='registro_incidencia',
+                    delivery=delivery  # Asegúrate de asociar la entrega
+                )
+                print(f"Error: Encabezados inválidos para {delivery.customer.email}")
+
+            except SMTPException as e:
+                # Error de SMTP (correo no válido, no existe, etc.)
+                albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
                 EmailNotificationFailure.objects.create(
                     customer=delivery.customer,
                     reason=str(e),
                     albaran=albaran_info,
-                    email_type='resolucion_incidencia'  # Especificamos el tipo de email
+                    email_type='registro_incidencia',
+                    delivery=delivery  # Asegúrate de asociar la entrega
                 )
-                print(f"Error enviando el correo: {e}")
+                print(f"Error SMTP enviando el correo a {delivery.customer.email}: {e}")
+
+            except Exception as e:
+                # Otro error imprevisto
+                albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
+                EmailNotificationFailure.objects.create(
+                    customer=delivery.customer,
+                    reason=str(e),
+                    albaran=albaran_info,
+                    email_type='registro_incidencia',
+                    delivery=delivery  # Asegúrate de asociar la entrega
+                )
+                print(f"Error desconocido enviando el correo a {delivery.customer.email}: {e}")
+
         else:
-            print("No se envió correo porque el cliente no tiene un email registrado.")
+            # Si no tiene email registrado
+            albaran_info = f"{delivery.fiscal_year}/{delivery.delivery_number}"
+            EmailNotificationFailure.objects.create(
+                customer=delivery.customer,
+                reason="Cliente sin email registrado",
+                albaran=albaran_info,
+                email_type='registro_incidencia',
+                delivery=delivery  # Asegúrate de asociar la entrega
+            )
+            print(f"Error: Cliente sin email registrado")
 
         return Response({
-            'message': 'Número de incidencia actualizado y correo enviado correctamente.',
+            'message': 'Número de incidencia actualizado y correo enviado correctamente (si procede).',
             'new_status': delivery.status,
         })
     except Delivery.DoesNotExist:
-        print("Albarán no encontrado")
         return Response({'error': 'Albarán no encontrado'}, status=404)
     except Exception as e:
         print(f"Error interno: {str(e)}")
@@ -553,3 +693,354 @@ def albaranes_tratados(request):
 def albaranes_no_resueltos(request):
     count = Delivery.objects.filter(status='no_resuelto').count()
     return JsonResponse({'count': count})
+
+@api_view(['GET'])  # Permitir acceso público
+@permission_classes([AllowAny])
+def email_failures(request):
+    """
+    Listar los fallos de email, incluyendo información de cliente y albarán.
+    """
+    try:
+        # Obtener parámetros de filtro
+        date_from = request.GET.get('dateFrom', None)
+        date_to = request.GET.get('dateTo', None)
+        email_type = request.GET.get('email_type', None)
+        client_number = request.GET.get('client_number', None)
+        status = request.GET.get('status', None)
+        reason = request.GET.get('reason', None)
+        # Base query para obtener todos los fallos de emails
+        failures = EmailNotificationFailure.objects.select_related('customer').all()
+
+        # Aplicar filtros
+        if date_from:
+            failures = failures.filter(timestamp__gte=datetime.strptime(date_from, "%Y-%m-%d"))
+        if date_to:
+            failures = failures.filter(timestamp__lte=datetime.strptime(date_to, "%Y-%m-%d") + timedelta(days=1))
+        if email_type:
+            failures = failures.filter(email_type=email_type)
+        if client_number:
+            failures = failures.filter(customer__client_number=client_number)
+        if status:
+            failures = failures.filter(status=status)
+        if reason:
+            failures = failures.filter(reason=reason)
+            
+        failures = failures.order_by('-timestamp')  # Orden descendente por fecha de creación
+
+        result = []
+
+        for failure in failures:
+            result.append({
+                'id': failure.id, 
+                'reason': failure.reason,
+                'customer_email': failure.customer.email if failure.customer else None,
+                'albaran': failure.albaran,
+                'email_type': failure.email_type,
+                'status': failure.status,  # Incluimos el estado del fallo
+                'created_at': failure.timestamp.strftime('%d/%m/%y %H:%M'),
+                'client_number': failure.customer.client_number if failure.customer else None,
+                'delivery_id': failure.delivery_id  # Asegúrate de que esto está en la respuesta# Número de cliente
+            })
+
+        return JsonResponse(result, safe=False)
+
+    except AttributeError as e:
+        return JsonResponse({'error': f'Error de atributo: {str(e)}'}, status=500)
+
+    except Exception as e:
+        return JsonResponse({'error': f'Error: {str(e)}'}, status=500)
+
+
+
+@api_view(['PUT', 'POST'])
+@permission_classes([AllowAny])
+def update_failure(request, failure_id):
+    """
+    Actualizar el fallo de email con un nuevo correo electrónico y cambiar el estado.
+    """
+    failure = get_object_or_404(EmailNotificationFailure, id=failure_id)
+
+    new_email = request.data.get('new_email')
+    new_status = request.data.get('status')
+
+    if new_email:
+        # Actualizar el email en la tabla Customer
+        customer = failure.customer
+        if customer:
+            customer.email = new_email
+            customer.save()
+
+    if new_status:
+        # Actualizar el estado del fallo
+        failure.status = new_status
+        failure.save()
+
+    return Response({"message": "Fallos de correo electrónico actualizados con éxito."}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def resend_email(request, failure_id):
+    """
+    Reenviar el correo electrónico fallido tras actualizar el email.
+    """
+    try:
+        failure = get_object_or_404(EmailNotificationFailure, id=failure_id)
+        print(f"Failure encontrado: {failure}")
+        print(f"Customer: {failure.customer}, Email: {failure.customer.email if failure.customer else 'No tiene email'}")
+
+        customer = failure.customer
+        if not customer or not customer.email:
+            print("Cliente o correo inválido")
+            return Response({'error': 'El cliente no tiene un correo electrónico válido'}, status=status.HTTP_400_BAD_REQUEST)
+
+        print(f"Failure encontrado: {failure}, Delivery: {failure.delivery}")
+    # Lógica para reenviar el correo dependiendo del tipo de email que falló
+        try:
+            print(f"Tipo de email: {failure.email_type}")
+            if failure.email_type == 'registro_incidencia':
+                # Reenviar el correo de registro de incidencia
+                return _reenviar_correo_incidencia(customer, failure)
+            
+            elif failure.email_type == 'resolucion_incidencia':
+                # Reenviar el correo de resolución de incidencia
+                return _reenviar_correo_resolucion(customer, failure)
+
+            elif failure.email_type == 'albaran_incidencia':
+                # Reenviar el correo de albarán con incidencia
+                return _reenviar_correo_albaran(customer, failure)
+
+            else:
+                print("Tipo de correo no válido")
+                return Response({'error': 'Tipo de correo no válido'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Si el correo fue enviado correctamente, actualizar el estado a 'Contactado'
+            failure.status = 'Contactado'
+            failure.save()
+            print("Correo reenviado con éxito.")
+
+            return Response({"message": "Correo reenviado con éxito."}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            
+            print(f"Error reenviando el correo: {str(e)}")  # Capturar el error
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    except Exception as e:
+        print(f"Error al procesar la solicitud de reenvío de correo: {str(e)}")
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+def get_email_failure_reasons(request):
+    """
+    Devuelve una lista de los motivos únicos de fallos de emails
+    """
+    try:
+        # Obtener los motivos únicos de la tabla EmailNotificationFailure
+        reasons = EmailNotificationFailure.objects.values_list('reason', flat=True).distinct()
+        return JsonResponse(list(reasons), safe=False)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+def _reenviar_correo_incidencia(customer, failure):
+    delivery = getattr(failure, 'delivery', None)
+    if not delivery:
+        return Response({'error': 'No se encontró el albarán relacionado con este fallo de correo.'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        
+        incident_number = getattr(delivery, 'incident_number', None)  # Obtener el número de incidencia
+
+        if not incident_number:
+            return Response({'error': 'No se encontró el número de incidencia asociado a este albarán.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Obtener detalles del cliente y del albarán
+        delivery = failure.delivery # Suponiendo que `failure` tiene una relación con `delivery`
+        print(f"Delivery: {delivery}")
+        
+        send_mail(
+            subject=f'Incidencia registrada: {incident_number}',
+            message=f"Estimado/a {customer.name},\n\n"
+                    f"Se ha registrado una incidencia con el número de albarán {delivery.fiscal_year}/{delivery.delivery_number}.\n\n"
+                    f"Nuestro equipo está trabajando para resolverla lo antes posible.\n\n"
+                    f"Atentamente,\n"
+                    f"Departamento de Atención al Cliente\n"
+                    f"952 91 61 18\n"
+                    f"bahiaazul@mubak.com",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[customer.email],
+            fail_silently=False,
+            html_message=f"""
+                    <p>Estimado/a {delivery.customer.name},</p>
+                    <p>Se ha registrado una incidencia con el número {incident_number} para su albarán {delivery.fiscal_year}/{delivery.delivery_number}. Nuestro equipo está trabajando para resolverla a la mayor brevedad posible.</p>
+                    <p>Agradecemos su paciencia.</p>
+                    <p>Atentamente,</p>
+                    <p>WOW Málaga<br>
+                    Departamento de Atención al Cliente<br>
+                    <a href="tel:+34952916118">952 91 61 18</a><br>
+                    <a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
+
+                    <hr>
+
+                    <p>Dear {delivery.customer.name},</p>
+                    <p>An issue has been registered with incident number {incident_number} for your delivery {delivery.fiscal_year}/{delivery.delivery_number}. Our team is working to resolve it as soon as possible.</p>
+                    <p>Thank you for your patience.</p>
+                    <p>Sincerely,</p>
+                    <p>WOW Málaga<br>
+                    Customer Service Department<br>
+                    <a href="tel:+34952916118">+34 952 91 61 18</a><br>
+                    <a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
+
+            """
+        )
+
+        # Actualizar estado a 'contacted'
+        failure.status = 'contacted'
+        failure.save()
+
+        return Response({"message": "Correo reenviado con éxito."}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+def _reenviar_correo_resolucion(customer, failure):
+    delivery = getattr(failure, 'delivery', None)
+    if not delivery:
+        return Response({'error': 'No se encontró el albarán relacionado con este fallo de correo.'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        delivery = failure.delivery
+        print(f"Delivery: {delivery}")
+
+        send_mail(
+            subject=f"Resolución de incidencia - Albarán N.º {delivery.fiscal_year}/{delivery.delivery_number}",
+            message=f"Estimado/a {customer.name},\n\n"
+                    f"Le informamos que su incidencia ha sido resuelta con éxito para el albarán {delivery.fiscal_year}/{delivery.delivery_number}.\n\n"
+                    f"Si tiene alguna duda, por favor póngase en contacto con nosotros.\n\n"
+                    f"Atentamente,\n"
+                    f"Departamento de Atención al Cliente\n"
+                    f"952 91 61 18\n"
+                    f"bahiaazul@mubak.com",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[customer.email],
+            fail_silently=False,
+            html_message=f"""
+                <p>Estimado/a {customer.name},</p>
+                <p>Le informamos que su incidencia ha sido resuelta con éxito.</p>
+                <p>Si tiene alguna duda, por favor póngase en contacto con nosotros.</p>
+                <p>Atentamente,</p>
+                <p>WOW Málaga<br>Departamento de Atención al Cliente<br><a href="tel:+34952916118">+34 952 91 61 18</a><br><a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
+
+                <hr>
+
+                <p>Dear {customer.name},</p>
+                <p>Your issue has been successfully resolved for delivery {delivery.fiscal_year}/{delivery.delivery_number}.</p>
+                <p>If you have any questions, please feel free to contact us.</p>
+                <p>Sincerely,</p>
+                <p>WOW Málaga<br>Customer Service Department<br><a href="tel:+34952916118">+34 952 91 61 18</a><br><a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
+            """
+        )
+
+        # Actualizar estado a 'contacted'
+        failure.status = 'contacted'
+        failure.save()
+
+        return Response({"message": "Correo de resolución reenviado con éxito."}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+def _reenviar_correo_albaran(customer, failure):
+    
+    delivery = getattr(failure, 'delivery', None)
+    if not delivery:
+        return Response({'error': 'No se encontró el albarán relacionado con este fallo de correo.'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        delivery = failure.delivery
+        print(f"Delivery: {delivery}")# Suponiendo que failure tiene una relación con delivery
+        productos_afectados = ""
+
+        # Obtener los productos afectados si están disponibles
+        if delivery.issues:
+            product_details = []
+            for issue in delivery.issues:
+                product = Product.objects.filter(product_number=issue).first()
+                if product:
+                    product_details.append(f"<li>E-{product.product_number} {product.description}</li>")
+                else:
+                    product_details.append(f"<li>Producto con número {issue} no encontrado</li>")
+            productos_afectados = "".join(product_details)
+        else:
+            productos_afectados = "<li>Sin detalles de productos.</li>"
+
+        # Enviar el correo de notificación de incidencia
+        send_mail(
+            subject=f"Incidencia registrada - Albarán N.º {delivery.fiscal_year}/{delivery.delivery_number}",
+            message=f"Estimado/a {customer.name},\n\n"
+                    f"Le informamos que se ha registrado una incidencia con el número de albarán {delivery.fiscal_year}/{delivery.delivery_number}.\n\n"
+                    f"A continuación se detalla la lista de productos afectados:\n"
+                    f"{productos_afectados}\n\n"
+                    f"Nuestro equipo está trabajando para resolver esta incidencia lo antes posible y nos pondremos en contacto con usted si necesitamos más información.\n\n"
+                    f"Agradecemos su paciencia y lamentamos los inconvenientes que esto pueda ocasionar.\n\n"
+                    f"Atentamente,\n"
+                    f"Departamento de Atención al Cliente\n"
+                    f"952 91 61 18\n"
+                    f"bahiaazul@mubak.com",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[customer.email],
+            fail_silently=False,
+            html_message=f"""
+                <p>Estimado/a {customer.name},</p>
+                <p>Le informamos que se ha registrado una incidencia en su albarán con los siguientes detalles:</p>
+                <ul>
+                    <li><strong>Número de Albarán:</strong> {delivery.fiscal_year}/{delivery.delivery_number}</li>
+                    <li><strong>Número de Cliente:</strong> {delivery.client_number}</li>
+                </ul>
+                <p><strong>Productos Afectados:</strong></p>
+                <ul>
+                    {productos_afectados}
+                </ul>
+                <p>Nuestro equipo está trabajando para resolver la incidencia a la mayor brevedad posible y le contactaremos si necesitamos información adicional.</p>
+                <p>Le agradecemos su paciencia y lamentamos cualquier inconveniente causado.</p>
+                <p>Atentamente,</p>
+                <p>WOW Málaga<br>Departamento de Atención al Cliente<br><a href="tel:+34952916118">+34 952 91 61 18</a><br><a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
+
+                <hr>
+
+                <p>Dear {customer.name},</p>
+                <p>An issue has been registered with your delivery:</p>
+                <ul>
+                    <li><strong>Delivery Number:</strong> {delivery.fiscal_year}/{delivery.delivery_number}</li>
+                    <li><strong>Customer Number:</strong> {delivery.client_number}</li>
+                </ul>
+                <p><strong>Affected Products:</strong></p>
+                <ul>
+                    {productos_afectados}
+                </ul>
+                <p>Our team is working to resolve this issue as soon as possible, and we will contact you if we need additional information.</p>
+                <p>We appreciate your patience and apologize for any inconvenience this may cause.</p>
+                <p>Sincerely,</p>
+                <p>WOW Málaga<br>Customer Service Department<br><a href="tel:+34952916118">+34 952 91 61 18</a><br><a href="mailto:bahiaazul@mubak.com">bahiaazul@mubak.com</a></p>
+            """
+        )
+
+        # Actualizar estado a 'contacted'
+        failure.status = 'contacted'
+        failure.save()
+
+        return Response({"message": "Correo de incidencia reenviado con éxito."}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def count_pending_emails(request):
+    """
+    Devuelve el número de correos electrónicos pendientes de contacto (status='pending').
+    """
+    try:
+        pending_count = EmailNotificationFailure.objects.filter(status='pendiente_contacto').count()
+        return Response({'pending_count': pending_count}, status=200)
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Delivery, DeliveryImage, IssuePhoto, Customer, Product
+from .models import Delivery, DeliveryImage, IssuePhoto, Customer, Product, EmailNotificationFailure
 from django.utils import timezone
 import json
 
@@ -147,8 +147,11 @@ class DeliverySerializer(serializers.ModelSerializer):
             for photo in uploaded_issue_photos:
                 print(f"Guardando foto de incidencia: {photo}")
                 IssuePhoto.objects.create(delivery=delivery, image=photo)
-        
-        
-
+            
         return delivery
     
+    class EmailNotificationFailureSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = EmailNotificationFailure
+            fields = ['reason', 'customer', 'albaran', 'email_type', 'status']
+        

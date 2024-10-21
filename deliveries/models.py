@@ -152,7 +152,8 @@ class EmailNotificationFailure(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)  # Fecha y hora del fallo
     albaran = models.CharField(max_length=20, blank=True, null=True)  # Almacena el albarán con el formato "año_fiscal/nºdealbaran"
     email_type = models.CharField(max_length=50, choices=EMAIL_TYPE_CHOICES, blank=True, null=True)  # Tipo de email que falló
-
+    status = models.CharField(max_length=20, default='pendiente_contacto')  # Asegúrate de que el campo status esté definido    
+    delivery = models.ForeignKey(Delivery, on_delete=models.CASCADE, null=True, blank=True)
     def __str__(self):
         return f"Fallo de Email - Cliente: {self.customer} - Albarán: {self.albaran} - Tipo: {self.email_type} - Fecha: {self.timestamp}"
 

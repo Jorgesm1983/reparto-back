@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import login_view, logout_view, check_session, albaranes_pendientes, albaranes_tratados, albaranes_no_resueltos
+from .views import login_view, logout_view, check_session, albaranes_pendientes, albaranes_tratados, albaranes_no_resueltos, update_failure, resend_email, email_failures, get_email_failure_reasons, count_pending_emails
 from . import views
 
 urlpatterns = [
@@ -14,4 +14,9 @@ urlpatterns = [
     path('api/albaranes-pendientes/', albaranes_pendientes, name='albaranes-pendientes'),
     path('api/albaranes-tratados/', albaranes_tratados, name='albaranes-tratados'),
     path('api/albaranes-no-resueltos/', albaranes_no_resueltos, name='albaranes-no-resueltos'),
+    path('api/email_failures/', email_failures, name='email_failures'),  # Añade esta línea
+    path('api/update_failure/<int:failure_id>/', update_failure, name='update_failure'),
+    path('api/resend_email/<int:failure_id>/', resend_email, name='resend_email'),
+    path('api/email_failures/reasons/', get_email_failure_reasons, name='get_email_failure_reasons'),
+    path('api/count_pending_emails/', count_pending_emails, name='count_pending_emails'),
 ]
