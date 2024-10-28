@@ -61,7 +61,7 @@ class DeliverySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Delivery
-        fields = ['id','username','visit_type_display','status_display','product_descriptions','incident_number','client_number','client_number_display','uploaded_delivery_images','uploaded_issue_photos','customer_name', 'fiscal_year', 'delivery_number', 'client_conformity', 'has_issue', 'observations', 'delivery_images', 'issue_photos', 'issues', 'visit_type', 'is_resolved', 'status','created_at']
+        fields = ['id','username','visit_type_display','status_display','product_descriptions','incident_number','client_number','client_number_display','uploaded_delivery_images','uploaded_issue_photos','customer_name', 'fiscal_year', 'delivery_number', 'client_conformity', 'has_issue', 'observations', 'delivery_images', 'issue_photos', 'issues', 'visit_type', 'is_resolved', 'status','created_at', 'status_satisfaction']
 
         extra_kwargs = {
             'client_number': {'write_only': True},

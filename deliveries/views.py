@@ -31,6 +31,7 @@ from smtplib import SMTPException
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email# <-- Añade esta línea
 from django.shortcuts import get_object_or_404
+from django.core.paginator import Paginator
 
 
 import json
@@ -367,7 +368,7 @@ class DeliveryCreateView(APIView):
                     
                     <hr>
 
-                    <p>Dear {customer.name},</p>
+                    <p>Dear {delivery.customer.name},</p>
                     <p>Your issue has been successfully resolved for delivery {delivery.fiscal_year}/{delivery.delivery_number}.</p>
                     <p>If you have any questions, please feel free to contact us.</p>
                     <p>Sincerely,</p>
@@ -739,7 +740,8 @@ def email_failures(request):
                 'status': failure.status,  # Incluimos el estado del fallo
                 'created_at': failure.timestamp.strftime('%d/%m/%y %H:%M'),
                 'client_number': failure.customer.client_number if failure.customer else None,
-                'delivery_id': failure.delivery_id  # Asegúrate de que esto está en la respuesta# Número de cliente
+                'delivery_id': failure.delivery_id,
+                'name': failure.customer.name if failure.customer else None,  # Nombre del cliente# Asegúrate de que esto está en la respuesta# Número de cliente
             })
 
         return JsonResponse(result, safe=False)
@@ -785,50 +787,53 @@ def resend_email(request, failure_id):
     Reenviar el correo electrónico fallido tras actualizar el email.
     """
     try:
+        # Obtener el fallo de email y el cliente asociado
         failure = get_object_or_404(EmailNotificationFailure, id=failure_id)
-        print(f"Failure encontrado: {failure}")
-        print(f"Customer: {failure.customer}, Email: {failure.customer.email if failure.customer else 'No tiene email'}")
-
         customer = failure.customer
+
+        # Validación del cliente y su correo electrónico
         if not customer or not customer.email:
             print("Cliente o correo inválido")
             return Response({'error': 'El cliente no tiene un correo electrónico válido'}, status=status.HTTP_400_BAD_REQUEST)
 
-        print(f"Failure encontrado: {failure}, Delivery: {failure.delivery}")
-    # Lógica para reenviar el correo dependiendo del tipo de email que falló
+        # Validación del delivery asociado usando el delivery_id
+        delivery = Delivery.objects.filter(id=failure.delivery_id).first()
+        if not delivery:
+            print(f"Delivery no encontrado para el fallo de email: {failure}")
+            return Response({'error': 'No se encontró el albarán relacionado con este fallo de correo.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        print(f"Failure encontrado: {failure}, Delivery: {delivery}")
+
+        # Lógica para reenviar el correo dependiendo del tipo de email que falló
         try:
             print(f"Tipo de email: {failure.email_type}")
             if failure.email_type == 'registro_incidencia':
-                # Reenviar el correo de registro de incidencia
-                return _reenviar_correo_incidencia(customer, failure)
-            
+                return _reenviar_correo_incidencia(customer, delivery, failure)
+
             elif failure.email_type == 'resolucion_incidencia':
-                # Reenviar el correo de resolución de incidencia
-                return _reenviar_correo_resolucion(customer, failure)
+                return _reenviar_correo_resolucion(customer, delivery, failure)
 
             elif failure.email_type == 'albaran_incidencia':
-                # Reenviar el correo de albarán con incidencia
-                return _reenviar_correo_albaran(customer, failure)
+                return _reenviar_correo_albaran(customer, delivery, failure)
 
             else:
                 print("Tipo de correo no válido")
                 return Response({'error': 'Tipo de correo no válido'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Si el correo fue enviado correctamente, actualizar el estado a 'Contactado'
+            # Si el correo fue enviado correctamente, actualizar el estado a 'Contactado'
             failure.status = 'Contactado'
             failure.save()
             print("Correo reenviado con éxito.")
-
             return Response({"message": "Correo reenviado con éxito."}, status=status.HTTP_200_OK)
 
         except Exception as e:
-            
-            print(f"Error reenviando el correo: {str(e)}")  # Capturar el error
+            print(f"Error reenviando el correo: {str(e)}")
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+    
     except Exception as e:
         print(f"Error al procesar la solicitud de reenvío de correo: {str(e)}")
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     
 def get_email_failure_reasons(request):
     """
@@ -841,7 +846,7 @@ def get_email_failure_reasons(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
     
-def _reenviar_correo_incidencia(customer, failure):
+def _reenviar_correo_incidencia(customer, delivery, failure):
     delivery = getattr(failure, 'delivery', None)
     if not delivery:
         return Response({'error': 'No se encontró el albarán relacionado con este fallo de correo.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -858,7 +863,7 @@ def _reenviar_correo_incidencia(customer, failure):
         
         send_mail(
             subject=f'Incidencia registrada: {incident_number}',
-            message=f"Estimado/a {customer.name},\n\n"
+            message=f"Estimado/a {delivery.customer.name},\n\n"
                     f"Se ha registrado una incidencia con el número de albarán {delivery.fiscal_year}/{delivery.delivery_number}.\n\n"
                     f"Nuestro equipo está trabajando para resolverla lo antes posible.\n\n"
                     f"Atentamente,\n"
@@ -903,17 +908,13 @@ def _reenviar_correo_incidencia(customer, failure):
 
 
 
-def _reenviar_correo_resolucion(customer, failure):
-    delivery = getattr(failure, 'delivery', None)
+def _reenviar_correo_resolucion(customer, delivery, failure):
     if not delivery:
         return Response({'error': 'No se encontró el albarán relacionado con este fallo de correo.'}, status=status.HTTP_400_BAD_REQUEST)
     try:
-        delivery = failure.delivery
-        print(f"Delivery: {delivery}")
-
         send_mail(
             subject=f"Resolución de incidencia - Albarán N.º {delivery.fiscal_year}/{delivery.delivery_number}",
-            message=f"Estimado/a {customer.name},\n\n"
+            message=f"Estimado/a {delivery.customer.name},\n\n"
                     f"Le informamos que su incidencia ha sido resuelta con éxito para el albarán {delivery.fiscal_year}/{delivery.delivery_number}.\n\n"
                     f"Si tiene alguna duda, por favor póngase en contacto con nosotros.\n\n"
                     f"Atentamente,\n"
@@ -924,7 +925,7 @@ def _reenviar_correo_resolucion(customer, failure):
             recipient_list=[customer.email],
             fail_silently=False,
             html_message=f"""
-                <p>Estimado/a {customer.name},</p>
+                <p>Estimado/a {delivery.customer.name},</p>
                 <p>Le informamos que su incidencia ha sido resuelta con éxito.</p>
                 <p>Si tiene alguna duda, por favor póngase en contacto con nosotros.</p>
                 <p>Atentamente,</p>
@@ -932,7 +933,7 @@ def _reenviar_correo_resolucion(customer, failure):
 
                 <hr>
 
-                <p>Dear {customer.name},</p>
+                <p>Dear {delivery.customer.name},</p>
                 <p>Your issue has been successfully resolved for delivery {delivery.fiscal_year}/{delivery.delivery_number}.</p>
                 <p>If you have any questions, please feel free to contact us.</p>
                 <p>Sincerely,</p>
@@ -950,7 +951,8 @@ def _reenviar_correo_resolucion(customer, failure):
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-def _reenviar_correo_albaran(customer, failure):
+
+def _reenviar_correo_albaran(customer, delivery, failure):
     
     delivery = getattr(failure, 'delivery', None)
     if not delivery:
@@ -976,7 +978,7 @@ def _reenviar_correo_albaran(customer, failure):
         # Enviar el correo de notificación de incidencia
         send_mail(
             subject=f"Incidencia registrada - Albarán N.º {delivery.fiscal_year}/{delivery.delivery_number}",
-            message=f"Estimado/a {customer.name},\n\n"
+            message=f"Estimado/a {delivery.customer.name},\n\n"
                     f"Le informamos que se ha registrado una incidencia con el número de albarán {delivery.fiscal_year}/{delivery.delivery_number}.\n\n"
                     f"A continuación se detalla la lista de productos afectados:\n"
                     f"{productos_afectados}\n\n"
@@ -990,7 +992,7 @@ def _reenviar_correo_albaran(customer, failure):
             recipient_list=[customer.email],
             fail_silently=False,
             html_message=f"""
-                <p>Estimado/a {customer.name},</p>
+                <p>Estimado/a {delivery.customer.name},</p>
                 <p>Le informamos que se ha registrado una incidencia en su albarán con los siguientes detalles:</p>
                 <ul>
                     <li><strong>Número de Albarán:</strong> {delivery.fiscal_year}/{delivery.delivery_number}</li>
@@ -1007,7 +1009,7 @@ def _reenviar_correo_albaran(customer, failure):
 
                 <hr>
 
-                <p>Dear {customer.name},</p>
+                <p>Dear {delivery.customer.name},</p>
                 <p>An issue has been registered with your delivery:</p>
                 <ul>
                     <li><strong>Delivery Number:</strong> {delivery.fiscal_year}/{delivery.delivery_number}</li>
@@ -1044,3 +1046,85 @@ def count_pending_emails(request):
         return Response({'pending_count': pending_count}, status=200)
     except Exception as e:
         return Response({'error': str(e)}, status=500)
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def unsatisfied_customers(request):
+    """
+    Obtener los clientes insatisfechos ordenados por fecha descendente
+    """
+    try:
+        
+        # Obtener parámetros de filtro
+        date_from = request.GET.get('dateFrom')
+        date_to = request.GET.get('dateTo')
+        client_number = request.GET.get('client_number')
+        status_satisfaction = request.GET.get('status_satisfaction')  # Asegurarse de obtener este parámetro
+
+        # Base query: Filtrar por clientes no conformes
+        unsatisfied = Delivery.objects.filter(client_conformity=False)
+
+        # Filtrar por fecha si existen los parámetros
+        if date_from:
+            unsatisfied = unsatisfied.filter(created_at__gte=date_from)
+        if date_to:
+            unsatisfied = unsatisfied.filter(created_at__lte=date_to)
+        if client_number:
+            unsatisfied = unsatisfied.filter(customer__client_number=client_number)
+
+        # Filtrar por status_satisfaction
+        if status_satisfaction:
+            unsatisfied = unsatisfied.filter(status_satisfaction=status_satisfaction)
+
+        # Ordenar por fecha descendente
+        unsatisfied = unsatisfied.order_by('-created_at')
+
+        # Paginación
+        paginator = Paginator(unsatisfied, 10)  # 10 registros por página
+        page = request.GET.get('page')
+        deliveries_page = paginator.get_page(page)
+
+        # Serializar los datos
+        results = DeliverySerializer(deliveries_page, many=True).data
+
+        return Response({
+            'results': results,
+            'page': deliveries_page.number,
+            'num_pages': paginator.num_pages,
+        })
+
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['PUT'])
+@permission_classes([AllowAny])
+def update_unsatisfied_observation(request, delivery_id):
+    """
+    Actualizar las observaciones de un albarán insatisfecho.
+    """
+    try:
+        delivery = Delivery.objects.get(id=delivery_id)
+        observations = request.data.get('observations', '')
+
+        # Actualizar las observaciones
+        delivery.observations = observations
+        delivery.status_satisfaction = 'tratado'  # Cambiar el estado a 'tratado'
+
+        delivery.save()
+
+        return Response({"message": "Observaciones actualizadas con éxito."}, status=200)
+    except Delivery.DoesNotExist:
+        return Response({"error": "Albarán no encontrado."}, status=404)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def count_unsatisfied_customers(request):
+    """
+    Contar el número de clientes insatisfechos que no han sido tratados.
+    """
+    try:
+        count = Delivery.objects.filter(client_conformity=False, status_satisfaction='no_tratado').count()
+        return Response({'not_treated_count': count}, status=200)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -95,6 +95,10 @@ class Delivery(models.Model):
     updated_at = models.DateTimeField(auto_now=True)      # Fecha y hora de la última actualización
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='pendiente de tratar')
     incident_number = models.CharField(max_length=50, blank=True, null=True)  # Nuevo campo
+    status_satisfaction = models.CharField(max_length=50, choices=[
+        ('no_tratado', 'No Tratado'),
+        ('tratado', 'Tratado')
+    ], default='no_tratado')  # Nuevo campo para gestionar la satisfacción del cliente
 
 
     def save(self, *args, **kwargs):
