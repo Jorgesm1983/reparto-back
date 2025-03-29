@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-h-q#ii0)+%3zf8ewje(h(*d^ap@v!pha(^f@mvd(2=d3nn%)vy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
 
 
 
@@ -105,12 +105,24 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
 DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.mysql',
+    #         'NAME': 'dbs13890402',  # Nombre de tu base de datos en IONOS
+    #         'USER': 'dbu3451632',  # Usuario de la base de datos en IONOS
+    #         'PASSWORD': 'Lucia.Sofia.270916',  # Contraseña de la base de datos en IONOS
+    #         'HOST': 'db5017321190.hosting-data.io',  # Host proporcionado por IONOS
+    #         'PORT': '3306',  # Puerto MySQL por defecto
+    #         'OPTIONS': {
+    #             'charset':'utmf8mb4'
+    #     }
+    # }
+    
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'entrega_db',
         'USER': 'root',
         'PASSWORD': 'Password1576',
-        'HOST': '192.168.1.40',
+        'HOST': '192.168.1.36',
         'PORT': '3306', 
     }
 }
@@ -156,15 +168,16 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.40']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.36']
 
 CORS_ALLOW_ALL_ORIGINS = True  # Cambiar a False si usas CORS_ALLOWED_ORIGINS
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://localhost:8000',
-    'http://127.0.0.1:3000',# La URL de tu frontend
-    'http://192.168.1.40:8000',
-    'http://192.168.1.40:3000',  # La IP de tu frontend si lo estás accediendo desde otra red
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:8000', # La URL de tu frontend
+    'http://192.168.1.36:8000',
+    'http://192.168.1.36:3000',  # La IP de tu frontend si lo estás accediendo desde otra red
  ]
 
 
@@ -215,11 +228,11 @@ SESSION_COOKIE_SECURE = False  # Cambia a True si usas HTTPS en producción
 LOGIN_URL = '/api/login/'
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://192.168.1.40:3000',
+    'http://192.168.1.36:3000',
     'http://localhost:3000',
 ]
 
-ALLOWED_HOSTS = ['192.168.1.40', 'localhost']
+ALLOWED_HOSTS = ['192.168.1.36', '127.0.0.1', 'localhost']
 
 
 TIME_ZONE = 'Europe/Madrid'  # Ajusta a tu zona horaria
